@@ -22,8 +22,8 @@ import static com.appl.atm.model.Constants.*;
  * @author Annazar
  */
 public class ATM {
-    private int userAuthenticated;
-    private int adminAuthenticated;//whether user is admin
+    private boolean userAuthenticated;
+    private boolean adminAuthenticated;//whether user is admin
     private int currentAccountNumber; // current user's account number
     private Screen screen; // ATM's screen
     private Keypad keypad; // ATM's keypad
@@ -31,9 +31,11 @@ public class ATM {
     private DepositSlot depositSlot;
     private BankDatabase bankDatabase; // account information database
     private int loginAttempt = 0;
+    private int currentPIN;
 
     public ATM() {
-	userAuthenticated = 0;
+	userAuthenticated = false;
+        adminAuthenticated = false;
 	currentAccountNumber = 0;
 	screen = new Screen();
 	keypad = new Keypad();
@@ -48,11 +50,11 @@ public class ATM {
 	while (true) {
 	    // loop while user is not yet authenticated
 	    screen.displayMessageLine("\nWelcome!\n");
-	    while (userAuthenticated != 1) {
+	    while ((!userAuthenticated) && loginAttempt < 3) {
 		authenticateUser(); // authenticate user
 	    }
             
-            if (adminAuthenticated !=0) {
+            if (adminAuthenticated) {
                 performAdmins();
             } else {
                 if (loginAttempt == 3) {
@@ -60,13 +62,14 @@ public class ATM {
                     //bankDatabase.blockAccount(currentAccountNumber); //blokir acconut
                 } else {
                     performTransactions(); // user is now authenticated
-                    userAuthenticated = 1; // reset before next ATM session
+                    userAuthenticated = false; // reset before next ATM session
                 }
                 currentAccountNumber = 0; // reset before next ATM session
             }
             
 	    performTransactions(); // user is now authenticated
-	    userAuthenticated = 0; // reset before next ATM session
+	    userAuthenticated = false; // reset before next ATM session
+            adminAuthenticated = false; // reset before next ATM session
 	    currentAccountNumber = 0; // reset before next ATM session
 	    screen.displayMessageLine("\nThank you! Goodbye!");
 	}
@@ -74,29 +77,36 @@ public class ATM {
 
     // attempts to authenticate user against database
     private void authenticateUser() {
-	screen.displayMessage("Please enter your account number\t: ");
-	int accountNumber = keypad.getInput(); // input account number
-	screen.displayMessage("Enter your PIN\t\t\t\t: "); // prompt for PIN
-	int pin = keypad.getInput(); // input PIN
+        screen.displayMessage("\nPlease enter your account number: ");
+        int accountNumber = keypad.getInput(); // input account number
+        screen.displayMessage("\nEnter your PIN: "); // prompt for PIN
+        int pin = keypad.getInput(); // input PIN
 
-	// set userAuthenticated to boolean value returned by database
-	userAuthenticated
-		= bankDatabase.authenticateUser(accountNumber, pin);
+        currentAccountNumber = accountNumber;
+        currentPIN = pin;
+        
+        // set userAuthenticated to boolean value returned by database
+        adminAuthenticated
+                = bankDatabase.authenticateAdmin(accountNumber, pin);
+        userAuthenticated
+                = bankDatabase.authenticateUser(accountNumber, pin);
 
-	// check whether authentication succeeded
-	if (userAuthenticated == 1) {
-	    currentAccountNumber = accountNumber; // save user's account #
-	} else if(!bankDatabase.isUserExist(accountNumber) && !isAdmin(accountNumber)){
-	    screen.displayMessageLine(
-		    "Invalid account number or PIN. Please try again.\n");
-	} else if (!isAdmin(accountNumber)) {
+        // check whether authentication succeeded
+        if (userAuthenticated) {
+            currentAccountNumber = accountNumber; // save user's account #
+            loginAttempt = 0;
+//        } else if (adminAuthenticated){
+//            performAdmins();
+        } else if (!bankDatabase.isUserExist(accountNumber) && !isAdmin(accountNumber)) {
+            screen.displayMessageLine("Invalid user Account Number");
+            loginAttempt = 0;
+        } else if (!isAdmin(accountNumber)) {
             if (loginAttempt < 2) {
                 screen.displayMessageLine(
                         "Invalid PIN. Please try again. You have " + (2 - loginAttempt) + " attempt(s) remaining.");
             }
             loginAttempt++;
-        }
-         else if (isAdmin(accountNumber)) {
+        } else if (isAdmin(accountNumber)) {
             screen.displayMessageLine("Invalid PIN");
         }
     }
