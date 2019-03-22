@@ -18,6 +18,7 @@ public class MenuTanggal {
     private TanggalController tanggal;
 
     public void menuTanggal() {
+        tanggal = new TanggalController();
         Calendar now = Calendar.getInstance();
         int jumlahHari = 0, sumHari = 0, maxHari;
         int cekTanggal = now.getActualMaximum(Calendar.DATE);
