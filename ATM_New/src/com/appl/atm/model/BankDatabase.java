@@ -17,8 +17,9 @@ public class BankDatabase {
     
     public BankDatabase() {
         accounts = new ArrayList<Account>();
-	accounts.add(new Account(1234, 4321, 1000.0, 1200.0));
-	accounts.add(new Account(8765, 5678, 200.0, 200.0));
+	accounts.add(new MasaDepan(1234, 1234, 1000.0, 1200.0));
+	accounts.add(new Bisnis(5678, 1234, 200.0, 200.0));
+        accounts.add(new Siswa(4321, 1234, 200.0, 200.0));
     }
     
     public Account getAccount(int accountNumber) {

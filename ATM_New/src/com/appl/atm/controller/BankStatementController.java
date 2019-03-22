@@ -5,12 +5,16 @@
  */
 package com.appl.atm.controller;
 import com.appl.atm.model.BankStatement;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author ACER
  */
 public class BankStatementController {
-    BankStatement bankStatement = new BankStatement();
+   private List<BankStatement> list = new ArrayList<>();
     
-    
+   public void setBankStatement( int account, String description,int ref,double withdrawal,double deposit,String DepositValidate,double balance){
+       
+   }
 }

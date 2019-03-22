@@ -20,6 +20,7 @@ public class BankStatement {
     private String DepositValidate;
     private double balance;
 
+    
     /**
      * @return the idStatement
      */
