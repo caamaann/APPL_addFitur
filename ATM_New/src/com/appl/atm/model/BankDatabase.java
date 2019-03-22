@@ -51,5 +51,8 @@ public class BankDatabase {
 	    return 2;
 	}
     }
-   
+    
+    public boolean isUserExist(int userAccountNumber) {
+        return getAccount(userAccountNumber) != null;
+    }
 }

@@ -7,6 +7,7 @@ package com.appl.atm.controller;
 
 import com.appl.atm.model.BalanceInquiry;
 import com.appl.atm.model.BankDatabase;
+import com.appl.atm.model.Admin;
 import com.appl.atm.model.CashDispenser;
 import com.appl.atm.model.Deposit;
 import com.appl.atm.model.DepositSlot;
@@ -22,13 +23,14 @@ import static com.appl.atm.model.Constants.*;
  */
 public class ATM {
     private int userAuthenticated;
+    private int adminAuthenticated;//whether user is admin
     private int currentAccountNumber; // current user's account number
     private Screen screen; // ATM's screen
     private Keypad keypad; // ATM's keypad
     private CashDispenser cashDispenser; // ATM's cash dispenser
     private DepositSlot depositSlot;
     private BankDatabase bankDatabase; // account information database
-
+    private int loginAttempt = 0;
 
     public ATM() {
 	userAuthenticated = 0;
@@ -49,7 +51,20 @@ public class ATM {
 	    while (userAuthenticated != 1) {
 		authenticateUser(); // authenticate user
 	    }
-
+            
+            if (adminAuthenticated !=0) {
+                performAdmins();
+            } else {
+                if (loginAttempt == 3) {
+                    screen.displayMessageLine("Your account has been blocked, please contact the bank");
+                    //bankDatabase.blockAccount(currentAccountNumber); //blokir acconut
+                } else {
+                    performTransactions(); // user is now authenticated
+                    userAuthenticated = 1; // reset before next ATM session
+                }
+                currentAccountNumber = 0; // reset before next ATM session
+            }
+            
 	    performTransactions(); // user is now authenticated
 	    userAuthenticated = 0; // reset before next ATM session
 	    currentAccountNumber = 0; // reset before next ATM session
@@ -71,12 +86,25 @@ public class ATM {
 	// check whether authentication succeeded
 	if (userAuthenticated == 1) {
 	    currentAccountNumber = accountNumber; // save user's account #
-	} else {
+	} else if(!bankDatabase.isUserExist(accountNumber) && !isAdmin(accountNumber)){
 	    screen.displayMessageLine(
 		    "Invalid account number or PIN. Please try again.\n");
-	}
+	} else if (!isAdmin(accountNumber)) {
+            if (loginAttempt < 2) {
+                screen.displayMessageLine(
+                        "Invalid PIN. Please try again. You have " + (2 - loginAttempt) + " attempt(s) remaining.");
+            }
+            loginAttempt++;
+        }
+         else if (isAdmin(accountNumber)) {
+            screen.displayMessageLine("Invalid PIN");
+        }
     }
-
+    
+    private boolean isAdmin(int adminAccountNumber) {
+        return adminAccountNumber == 0;
+    }
+    
     // display the main menu and perform transactions
     private void performTransactions() {
 	// local variable to store transaction currently being processed
@@ -131,6 +159,14 @@ public class ATM {
 	    }
 	}
     }
+    
+    private void performAdmins() {
+        // local variable to store transaction currently being processed
+        Transaction currentTransaction = null;
+
+        boolean userExited = false; // user has not chosen to exit
+    
+    }
 
     // display the main menu and return an input selection
     private int displayMainMenu() {
@@ -141,6 +177,18 @@ public class ATM {
 	screen.displayMessageLine("4 - Exit\n");
 	screen.displayMessage("Enter a choice: ");
 	return keypad.getInput(); // return user's selection
+    }
+    
+    private int displayAdminMenu() {
+        screen.displayMessageLine("\nAdmin menu:");
+        screen.displayMessageLine("1 - Add Nasabah");
+        screen.displayMessageLine("2 - Unblock Nasabah");
+        screen.displayMessageLine("3 - Validate Deposit");
+        screen.displayMessageLine("4 - See Money Dispenser");
+        screen.displayMessageLine("5 - Add Tanggal");
+        screen.displayMessageLine("0 - Exit\n");
+        screen.displayMessage("Enter a choice: ");
+        return keypad.getInput(); // return user's selection
     }
 
     private Transaction createTransaction(int type) {
