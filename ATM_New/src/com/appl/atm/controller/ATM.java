@@ -95,8 +95,8 @@ public class ATM {
         if (userAuthenticated) {
             currentAccountNumber = accountNumber; // save user's account #
             loginAttempt = 0;
-//        } else if (adminAuthenticated){
-//            performAdmins();
+        } else if (adminAuthenticated){
+            performAdmins();
         } else if (!bankDatabase.isUserExist(accountNumber) && !isAdmin(accountNumber)) {
             screen.displayMessageLine("Invalid user Account Number");
             loginAttempt = 0;
