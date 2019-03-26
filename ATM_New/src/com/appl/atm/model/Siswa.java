@@ -11,11 +11,20 @@ package com.appl.atm.model;
  */
 public class Siswa extends Account {
 
-    public static final int MAXWITHDRAW = 20;
+    private static final int MAXWITHDRAW = 20;
 
     public Siswa(int theAccountNumber, int thePIN,
             double theAvailableBalance, double theTotalBalance) {
         super(theAccountNumber, thePIN,
                 theAvailableBalance, theTotalBalance);
     }
+
+    /**
+     * @return the MAXWITHDRAW
+     */
+    public static int getMAXWITHDRAW() {
+        return MAXWITHDRAW;
+    }
+    
+    
 }

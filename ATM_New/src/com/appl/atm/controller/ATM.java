@@ -7,6 +7,7 @@ package com.appl.atm.controller;
 
 import com.appl.atm.model.BalanceInquiry;
 import com.appl.atm.model.BankDatabase;
+import com.appl.atm.model.Admin;
 import com.appl.atm.model.CashDispenser;
 import com.appl.atm.model.Deposit;
 import com.appl.atm.model.DepositSlot;
@@ -21,7 +22,8 @@ import static com.appl.atm.model.Constants.*;
  * @author Annazar
  */
 public class ATM {
-    private int userAuthenticated;
+    private boolean userAuthenticated;
+    private boolean adminAuthenticated;//whether user is admin
     private int currentAccountNumber; // current user's account number
     private Screen screen; // ATM's screen
     private Keypad keypad; // ATM's keypad
@@ -39,8 +41,19 @@ public class ATM {
     private static final int WITHDRAWAL_HISTORY = 8;
     private static final int EXIT = 0;
     
+    
+    private static final int ADD_NASABAH = 1;
+    private static final int UNBLOCK = 2;
+    private static final int VALIDATE = 3;
+    private static final int MONEY_DISPEN = 4;
+    private static final int ADD_TANGGAL = 5;
+    
+    private int loginAttempt = 0;
+    private int currentPIN;
+
     public ATM() {
-	userAuthenticated = 0;
+	userAuthenticated = false;
+        adminAuthenticated = false;
 	currentAccountNumber = 0;
 	screen = new Screen();
 	keypad = new Keypad();
@@ -55,12 +68,26 @@ public class ATM {
 	while (true) {
 	    // loop while user is not yet authenticated
 	    screen.displayMessageLine("\nWelcome!\n");
-	    while (userAuthenticated != 1) {
+	    while ((!userAuthenticated) && loginAttempt < 3) {
 		authenticateUser(); // authenticate user
 	    }
-
-	    performTransactions(); // user is now authenticated
-	    userAuthenticated = 0; // reset before next ATM session
+            
+            if (adminAuthenticated) {
+                performAdmins();
+            } else {
+                if (loginAttempt == 3) {
+                    screen.displayMessageLine("Your account has been blocked, please contact the bank");
+                    //bankDatabase.blockAccount(currentAccountNumber); //blokir acconut
+                } else {
+                    performTransactions(); // user is now authenticated
+                    userAuthenticated = false; // reset before next ATM session
+                }
+                currentAccountNumber = 0; // reset before next ATM session
+            }
+            
+	    
+	    userAuthenticated = false; // reset before next ATM session
+            adminAuthenticated = false; // reset before next ATM session
 	    currentAccountNumber = 0; // reset before next ATM session
 	    screen.displayMessageLine("\nThank you! Goodbye!");
 	}
@@ -68,24 +95,46 @@ public class ATM {
 
     // attempts to authenticate user against database
     private void authenticateUser() {
-	screen.displayMessage("Please enter your account number\t: ");
-	int accountNumber = keypad.getInput(); // input account number
-	screen.displayMessage("Enter your PIN\t\t\t\t: "); // prompt for PIN
-	int pin = keypad.getInput(); // input PIN
+        screen.displayMessage("\nPlease enter your account number: ");
+        int accountNumber = keypad.getInput(); // input account number
+        screen.displayMessage("\nEnter your PIN: "); // prompt for PIN
+        int pin = keypad.getInput(); // input PIN
 
-	// set userAuthenticated to boolean value returned by database
-	userAuthenticated
-		= bankDatabase.authenticateUser(accountNumber, pin);
+        currentAccountNumber = accountNumber;
+        currentPIN = pin;
+        
+        // set userAuthenticated to boolean value returned by database
+        adminAuthenticated
+                = bankDatabase.authenticateAdmin(accountNumber, pin);
+        userAuthenticated
+                = bankDatabase.authenticateUser(accountNumber, pin);
 
-	// check whether authentication succeeded
-	if (userAuthenticated == 1) {
-	    currentAccountNumber = accountNumber; // save user's account #
-	} else {
-	    screen.displayMessageLine(
-		    "Invalid account number or PIN. Please try again.\n");
-	}
+        
+        if (userAuthenticated) {
+            currentAccountNumber = accountNumber; // save user's account #
+            loginAttempt = 0;
+            
+        } else if (adminAuthenticated){
+            performAdmins();
+        
+        } else if (!bankDatabase.isUserExist(accountNumber) && !isAdmin(accountNumber)) {
+            screen.displayMessageLine("Invalid user Account Number");
+            loginAttempt = 0;
+        } else if (!isAdmin(accountNumber)) {
+            if (loginAttempt < 2) {
+                screen.displayMessageLine(
+                        "Invalid PIN. Please try again. You have " + (2 - loginAttempt) + " attempt(s) remaining.");
+            }
+            loginAttempt++;
+        } else if (isAdmin(accountNumber)) {
+            screen.displayMessageLine("Invalid PIN");
+        }
     }
-
+    
+    private boolean isAdmin(int adminAccountNumber) {
+        return adminAccountNumber == 0;
+    }
+    
     // display the main menu and perform transactions
     private void performTransactions() {
 	// local variable to store transaction currently being processed
@@ -146,6 +195,44 @@ public class ATM {
 	    }
 	}
     }
+    
+    private void performAdmins() {
+        // local variable to store transaction currently being processed
+        Transaction currentTransaction = null;
+
+        boolean userExited = false; // user has not chosen to exit
+
+        // loop while user has not chosen option to exit system
+        while (!userExited) {
+            AdminController admin = new AdminController();
+            // show main menu and get user selection
+            int adminMenuSelection = admin.displayMainMenu(currentAccountNumber);
+
+            // decide how to proceed based on user's menu selection
+            switch (adminMenuSelection) {
+                // user chose to perform one of three transaction types
+                case ADD_NASABAH:
+                case UNBLOCK:
+                    break;
+                case VALIDATE:
+                    break;
+                case MONEY_DISPEN:
+                   
+                    break;
+                case ADD_TANGGAL:
+                    break;
+                case EXIT: // user chose to terminate session
+                    screen.displayMessageLine("\nExiting the system...");
+                    userExited = true; // this ATM session should end
+                    break;
+                default: // 
+                    screen.displayMessageLine(
+                            "\nYou did not enter a valid selection. Try again.");
+                    break;
+            }
+        }
+    
+    }
 
     // display the main menu and return an input selection
     private int displayMainMenu() {
@@ -157,6 +244,7 @@ public class ATM {
 	screen.displayMessage("Enter a choice: ");
 	return keypad.getInput(); // return user's selection
     }
+    
 
     private Transaction createTransaction(int type) {
 	Transaction temp = null;

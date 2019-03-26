@@ -36,4 +36,26 @@ public class AccountController{
         return menu;
     }
     
+    
+    public int  displayWithdrawalMenu(int accountNumber){
+        BankDatabase bankDatabase = new BankDatabase();
+        
+        int menu;
+        Account account = bankDatabase.getAccount(accountNumber);
+        
+         if(account.toString().equals("Bisnis")){
+            BisnisView bisnis = new BisnisView();
+            menu = bisnis.displayWithdrawalMenu();
+        }else if(account.toString().equals("MasaDepan")){
+            MasaDepanView masaDepan = new MasaDepanView();
+            menu = masaDepan.displayWithdrawalMenu();
+        }else{
+            SiswaView siswa = new SiswaView();
+            menu = siswa.displayWithdrawalMenu();
+        }
+        
+        return menu;
+    }
+    
+   
 }
