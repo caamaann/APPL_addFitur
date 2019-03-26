@@ -18,56 +18,60 @@ public class Withdrawal extends Transaction {
 
     // Withdrawal constructor
     public Withdrawal(int userAccountNumber, BankDatabase atmBankDatabase,
-	    CashDispenser atmCashDispenser) {
+            CashDispenser atmCashDispenser) {
 
-	// initialize superclass variables
-	super(userAccountNumber, atmBankDatabase);
-	cashDispenser = atmCashDispenser;
+        // initialize superclass variables
+        super(userAccountNumber, atmBankDatabase);
+        cashDispenser = atmCashDispenser;
     }
 
     @Override
     public int execute() {
-	Account account = getBankDatabase().getAccount(getAccountNumber());
+        Account account = getBankDatabase().getAccount(getAccountNumber());
 
-	if (account.getAvailableBalance() < amount) {
-	    return BALANCE_NOT_ENOUGH;
-	}
+        if (account.getAvailableBalance() < amount) {
+            return BALANCE_NOT_ENOUGH;
+        }
 
-	if (cashDispenser.isSufficientCashAvailable(amount)) {
-	    cashDispenser.dispenseCash(amount);
-	    account.debit(amount);
-	    return WITHDRAW_SUCCESSFUL;
-	} else {
-	    return CASHDISPENSER_NOT_ENOUGH;
-	}
+        if (account.getMaxWithdraw() < amount) {
+            return REACH_LIMIT;
+        }
+
+        if (cashDispenser.isSufficientCashAvailable(amount)) {
+            cashDispenser.dispenseCash(amount);
+            account.debit(amount);
+            return WITHDRAW_SUCCESSFUL;
+        } else {
+            return CASHDISPENSER_NOT_ENOUGH;
+        }
     }
 
     /**
      * @return the amount
      */
     public int getAmount() {
-	return amount;
+        return amount;
     }
 
     /**
      * @param amount the amount to set
      */
     public void setAmount(int amount) {
-	this.amount = amount;
+        this.amount = amount;
     }
 
     /**
      * @return the cashDispenser
      */
     public CashDispenser getCashDispenser() {
-	return cashDispenser;
+        return cashDispenser;
     }
 
     /**
      * @param cashDispenser the cashDispenser to set
      */
     public void setCashDispenser(CashDispenser cashDispenser) {
-	this.cashDispenser = cashDispenser;
+        this.cashDispenser = cashDispenser;
     }
 
 }
