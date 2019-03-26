@@ -78,7 +78,6 @@ public class ATM {
                 currentAccountNumber = 0; // reset before next ATM session
             }
             
-	    performTransactions(); // user is now authenticated
 	    userAuthenticated = false; // reset before next ATM session
             adminAuthenticated = false; // reset before next ATM session
 	    currentAccountNumber = 0; // reset before next ATM session
