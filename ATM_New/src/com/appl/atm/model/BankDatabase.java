@@ -5,6 +5,7 @@
  */
 package com.appl.atm.model;
 
+import com.appl.atm.view.*;
 import java.util.ArrayList;
 
 /**
@@ -26,9 +27,9 @@ public class BankDatabase {
 
     public Account getAccount(int accountNumber) {
         int i;
-        for (i = 0; i < accounts.size(); i++) {
+        for (i = 0; i < (int) accounts.size(); i++) {
             if (accounts.get(i).getAccountNumber() == accountNumber) {
-                return accounts.get(i);
+                return getAccounts().get(i);
             }
         }
         return null; // if no matching account was found, return null
@@ -70,5 +71,42 @@ public class BankDatabase {
 
     public boolean isUserExist(int userAccountNumber) {
         return getAccount(userAccountNumber) != null;
+    }
+    
+    public void blockAccount(int noAkun){
+        for(int i = 0; i < (int) accounts.size(); i++){
+            if(accounts.get(i).getAccountNumber() == noAkun){
+                accounts.get(i).blockUser();
+                return;
+            }
+        }
+    }
+    
+    public void changePIN(int noAkun){
+        Screen screen = new Screen();
+        Keypad keypad = new Keypad();
+        
+        int changed = 0;
+        while(changed == 0){
+            screen.displayMessage("Insert your new PIN : ");
+            int pinBaru = keypad.getInput();
+            
+            for(int i = 0; i < (int) accounts.size(); i++){
+                if(accounts.get(i).getAccountNumber() == noAkun){
+                    if(accounts.get(i).getPin() == pinBaru)
+                        screen.displayMessageLine("Your new PIN must be different from the current PIN");
+                    else{
+                        accounts.get(i).setPin(pinBaru);
+                        screen.displayMessageLine("Your PIN has succesfully been changed..");
+                        changed = 1;
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    public ArrayList<Account> getAccounts() {
+        return accounts;
     }
 }

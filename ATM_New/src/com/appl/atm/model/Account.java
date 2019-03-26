@@ -36,7 +36,7 @@ public class Account {
 
     // determines whether a user-specified PIN matches PIN in Account
     public boolean validatePIN(int userPIN) {
-        return userPIN == pin;
+        return userPIN == getPin();
     }
 
     // returns available balance
@@ -73,7 +73,7 @@ public class Account {
     }
 
     public void changePIN(int thePIN) {
-        this.pin = thePIN;
+        this.setPin(thePIN);
     }
 
     public void blockUser() {
@@ -134,5 +134,19 @@ public class Account {
 
     public int getMonthlyAdm() {
         return MONTHLY_ADM;
+    }
+    
+    /**
+     * @return the pin
+     */
+    public int getPin() {
+        return pin;
+    }
+
+    /**
+     * @param pin the pin to set
+     */
+    public void setPin(int pin) {
+        this.pin = pin;
     }
 }
