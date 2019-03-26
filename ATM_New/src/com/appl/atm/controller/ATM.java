@@ -33,6 +33,17 @@ public class ATM {
     private int loginAttempt = 0;
     private int currentPIN;
 
+
+    private static final int BALANCE_INQUIRY = 1;
+    private static final int WITHDRAWAL = 2;
+    private static final int DEPOSIT = 3;
+    private static final int TRANSFER = 4;
+    private static final int PASSWORD = 5;
+    private static final int BANK_STATEMENT = 6;
+    private static final int TRANSFER_HISTORY = 7;
+    private static final int WITHDRAWAL_HISTORY = 8;
+    private static final int EXIT = 0;
+    
     public ATM() {
 	userAuthenticated = false;
         adminAuthenticated = false;
@@ -126,7 +137,8 @@ public class ATM {
 	// loop while user has not chosen option to exit system
 	while (!userExited) {
 	    // show main menu and get user selection
-	    int mainMenuSelection = displayMainMenu();
+	    AccountController acc = new AccountController();   
+            int mainMenuSelection = acc.displayMainMenu(currentAccountNumber);
 
 	    // decide how to proceed based on user's menu selection
 	    switch (mainMenuSelection) {
@@ -156,7 +168,12 @@ public class ATM {
 			    = new DepositController(currentTransaction, keypad, screen);
 		    currentTransactionController.run(); // execute transaction
 		    break;
-		    
+                case TRANSFER:
+                    break;
+                case PASSWORD:
+                    break;
+                case BANK_STATEMENT:
+                    break;
 		case EXIT: // user chose to terminate session
 		    screen.displayMessageLine("\nExiting the system...");
 		    userExited = true; // this ATM session should end
