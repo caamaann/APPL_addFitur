@@ -18,7 +18,8 @@ import com.appl.atm.view.Screen;
 public class WithdrawalController extends TransactionController {
 
     private Withdrawal transaction;
-
+     BankStatementController bankStatement = new BankStatementController();
+    
     public WithdrawalController(Transaction theTransaction, Keypad theKeypad, Screen theScreen) {
 	super(theKeypad, theScreen);
 	transaction = (Withdrawal) theTransaction;
@@ -35,6 +36,8 @@ public class WithdrawalController extends TransactionController {
 
 	    if (res == WITHDRAW_SUCCESSFUL) {
 		getScreen().displayMessageLine("Your cash has been dispensed. Please take your cash now.");
+                bankStatement.setBankStatement(transaction.getAccountNumber(), "Withdrawal", 0, amount, 0, null);
+                    
 	    } else if (res == BALANCE_NOT_ENOUGH) {
 		getScreen().displayMessageLine("Your balance isn't enough for this withdrawal.");
 	    } else if (res == CASHDISPENSER_NOT_ENOUGH) {

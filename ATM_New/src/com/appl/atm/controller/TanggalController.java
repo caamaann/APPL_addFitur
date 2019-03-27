@@ -49,4 +49,12 @@ public class TanggalController {
     public int getTanggal(){
         return TanggalController.now.get(Calendar.DATE);
     }
+    
+    public String getDate(){
+        int day = now.get(Calendar.DATE);
+        int month = now.get(Calendar.MONTH)+1;
+        int year = now.get(Calendar.YEAR);
+        
+        return (day < 9 ? "0" : "")+day +"-"+ (month < 9 ? "0" : "")+month+"-"+year;
+    }
 }

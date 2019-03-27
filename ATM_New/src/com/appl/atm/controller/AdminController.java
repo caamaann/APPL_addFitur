@@ -21,8 +21,7 @@ public class AdminController {
         int menu;
         Account account = bankDatabase.getAccount(accountNumber);
         
-        
-      
+  
             AdminView admin = new AdminView();
             menu = admin.displayAdminMenu();
        

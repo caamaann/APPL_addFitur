@@ -5,12 +5,14 @@
  */
 package com.appl.atm.controller;
 
+import java.io.IOException;
+
 /**
  *
  * @author Annazar
  */
 public class MainATM {
-    public static void main(String args[])
+    public static void main(String args[]) throws IOException
     {
 	ATM atm = new ATM();
 	atm.run();

@@ -22,10 +22,10 @@ public class AccountController{
         int menu;
         Account account = bankDatabase.getAccount(accountNumber);
         
-        if(account.toString().equals("Bisnis")){
+        if(account.getAccountType().equals("Bisnis")){
             BisnisView bisnis = new BisnisView();
             menu = bisnis.displayMainMenu();
-        }else if(account.toString().equals("MasaDepan")){
+        }else if(account.getAccountType().equals("MasaDepan")){
             MasaDepanView masaDepan = new MasaDepanView();
             menu = masaDepan.displayMainMenu();
         }else{
@@ -43,10 +43,10 @@ public class AccountController{
         int menu;
         Account account = bankDatabase.getAccount(accountNumber);
         
-         if(account.toString().equals("Bisnis")){
+        if(account.getAccountType().equals("Bisnis")){
             BisnisView bisnis = new BisnisView();
             menu = bisnis.displayWithdrawalMenu();
-        }else if(account.toString().equals("MasaDepan")){
+        }else if(account.getAccountType().equals("MasaDepan")){
             MasaDepanView masaDepan = new MasaDepanView();
             menu = masaDepan.displayWithdrawalMenu();
         }else{

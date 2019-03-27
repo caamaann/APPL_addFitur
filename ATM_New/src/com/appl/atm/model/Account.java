@@ -89,7 +89,7 @@ public class Account {
     }
 
     public String getAccountType() {
-        return this.getClass().toString().substring(6);
+        return this.getClass().toString().substring(25);
     }
 
     public int getTransferToday() {

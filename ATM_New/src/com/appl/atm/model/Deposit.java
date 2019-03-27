@@ -29,7 +29,7 @@ public class Deposit extends Transaction {
     public int execute() {
 	if (depositSlot.isEnvelopeReceived()) {
 	    Account account = getBankDatabase().getAccount(getAccountNumber());
-	    account.credit(amount);
+	    account.debit(amount);
 	    return DEPOSIT_SUCCESSFUL;
 	} else {
 	    return ENVELOPE_IS_NOT_RECEIVED;

@@ -52,8 +52,8 @@ public class BankDatabase {
         Account userAccount = getAccount(userAccountNumber);
 
 //      if account exists, return result of Account method validatePIN
-        if (userAccount != null) {
-            return (userAccount.validatePIN(userPIN) && getAccount(userAccountNumber).getAccountType().equals("Admin"));
+        if (userAccount != null && !userAccount.isUserBlocked()) {
+           return (userAccount.validatePIN(userPIN) && userAccount.getAccountType().equals("Admin"));
         } else {
             return false; // account number not found, so return false
         }

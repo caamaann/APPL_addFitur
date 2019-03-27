@@ -16,6 +16,7 @@ import com.appl.atm.model.Withdrawal;
 import com.appl.atm.view.Keypad;
 import com.appl.atm.view.Screen;
 import static com.appl.atm.model.Constants.*;
+import java.io.IOException;
 
 /**
  *
@@ -63,7 +64,7 @@ public class ATM {
     }
 
     // start ATM 
-    public void run() {
+    public void run() throws IOException {
 	// welcome and authenticate user; perform transactions
 	while (true) {
 	    // loop while user is not yet authenticated
@@ -113,10 +114,11 @@ public class ATM {
         if (userAuthenticated) {
             currentAccountNumber = accountNumber; // save user's account #
             loginAttempt = 0;
-            
-        } else if (adminAuthenticated){
-            performAdmins();
-        
+            System.out.println("user"+userAuthenticated);
+       System.out.println("admin:"+adminAuthenticated);
+//        } else if (adminAuthenticated){
+//            performAdmins();
+//        
         } else if (!bankDatabase.isUserExist(accountNumber) && !isAdmin(accountNumber)) {
             screen.displayMessageLine("Invalid user Account Number");
             loginAttempt = 0;
@@ -136,7 +138,7 @@ public class ATM {
     }
     
     // display the main menu and perform transactions
-    private void performTransactions() {
+    private void performTransactions() throws IOException {
 	// local variable to store transaction currently being processed
 	Transaction currentTransaction = null;
 	TransactionController currentTransactionController = null;
@@ -182,6 +184,8 @@ public class ATM {
                 case PASSWORD:
                     break;
                 case BANK_STATEMENT:
+                    BankStatementController bankStatementController = new BankStatementController();
+                    bankStatementController.displayBankStatement(currentAccountNumber);
                     break;
 		case EXIT: // user chose to terminate session
 		    screen.displayMessageLine("\nExiting the system...");
