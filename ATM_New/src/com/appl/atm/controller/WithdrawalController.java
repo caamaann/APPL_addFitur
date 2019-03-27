@@ -5,6 +5,8 @@
  */
 package com.appl.atm.controller;
 
+import com.appl.atm.model.Account;
+import com.appl.atm.model.BankDatabase;
 import static com.appl.atm.model.Constants.*;
 import com.appl.atm.model.Transaction;
 import com.appl.atm.model.Withdrawal;
@@ -30,7 +32,7 @@ public class WithdrawalController extends TransactionController {
     @Override
     public int run() {
 	int amount = displayMenuOfAmounts();
-
+        
 	if (amount != 0) {
 	    transaction.setAmount(amount);
 	    int res = transaction.execute();
@@ -64,8 +66,8 @@ public class WithdrawalController extends TransactionController {
 	// loop while no valid choice has been made
 	while (userChoice == -1) {
 	    // display the withdrawal menu
-	    accView.displayWithdrawalMenu(amounts);
-	    int input = getKeypad().getInput(); // get user input through keypad
+	    int input = accView.displayWithdrawalMenu(amounts);
+	     // get user input through keypad
 
 	    // determine how to proceed based on the input value
 	    switch (input) {
