@@ -5,11 +5,10 @@
  */
 package com.appl.atm.controller;
 
-import com.appl.atm.model.Account;
-import com.appl.atm.model.BankDatabase;
 import static com.appl.atm.model.Constants.*;
 import com.appl.atm.model.Transaction;
 import com.appl.atm.model.Withdrawal;
+import com.appl.atm.view.AccountView;
 import com.appl.atm.view.Keypad;
 import com.appl.atm.view.Screen;
 
@@ -33,14 +32,21 @@ public class WithdrawalController extends TransactionController {
         if (amount != 0) {
             transaction.setAmount(amount);
             int res = transaction.execute();
-            if (res == WITHDRAW_SUCCESSFUL) {
-                getScreen().displayMessageLine("Your cash has been dispensed. Please take your cash now.");
-            } else if (res == BALANCE_NOT_ENOUGH) {
-                getScreen().displayMessageLine("Your balance isn't enough for this withdrawal.");
-            } else if (res == CASHDISPENSER_NOT_ENOUGH) {
-                getScreen().displayMessageLine("Cash dispenser doesn't have sufficient amount of cash.");
-            } else if (res == REACH_LIMIT) {
-                getScreen().displayMessageLine("You have exceed your withdrawal limit.");
+            switch (res) {
+                case WITHDRAW_SUCCESSFUL:
+                    getScreen().displayMessageLine("Your cash has been dispensed. Please take your cash now.");
+                    break;
+                case BALANCE_NOT_ENOUGH:
+                    getScreen().displayMessageLine("Your balance isn't enough for this withdrawal.");
+                    break;
+                case CASHDISPENSER_NOT_ENOUGH:
+                    getScreen().displayMessageLine("Cash dispenser doesn't have sufficient amount of cash.");
+                    break;
+                case REACH_LIMIT:
+                    getScreen().displayMessageLine("You have exceed your withdrawal limit.");
+                    break;
+                default:
+                    break;
             }
         }
 
