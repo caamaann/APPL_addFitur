@@ -201,9 +201,7 @@ public class ATM {
     }
     
     private void performAdmins() {
-        // local variable to store transaction currently being processed
-        Transaction currentTransaction = null;
-
+        
         boolean userExited = false; // user has not chosen to exit
 
         // loop while user has not chosen option to exit system

@@ -74,4 +74,8 @@ public class BankDatabase {
     public boolean isUserExist(int userAccountNumber) {
         return getAccount(userAccountNumber) != null;
     }
+    
+    public void incAccount(int theAccountNumber, int thePIN, double theAvailableBalance, double theTotalBalance) {
+        accounts.add( new Bisnis(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance));
+    }
 }
