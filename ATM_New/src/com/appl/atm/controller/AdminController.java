@@ -42,7 +42,7 @@ public class AdminController {
     }
     
     void AddNasabah(){
-        accAvail = false;
+        boolean accAvail = false;
         double theTotalBalance = 0, theAvailableBalance = 0;
         int theAccountNumber;
         int theAccountType;
@@ -53,8 +53,8 @@ public class AdminController {
             screen.displayMessageLine("\n2.Siswa");
             screen.displayMessageLine("\n3.Masa depan");
             screen.displayMessageLine("\nInput the number of your choice : ");
-            theAccountNumber = keypad.getInput();
-        } while(theAccountNumber<1 || theAccountNumber>2);
+            theAccountType = keypad.getInput();
+        } while(theAccountType<1 || theAccountType>3);
         
         do {
             screen.displayMessage("\nPlease input new user account number : ");
@@ -70,17 +70,16 @@ public class AdminController {
         screen.displayMessage("\nPlease input new user pin : ");
         int thePIN = keypad.getInput();
         /* TODO : periksa apakah admin*/
-        if (!Admin) {
-            do {
-                screen.displayMessageLine("\nPlease input new user starting balance : ");
-                theTotalBalance = theAvailableBalance = keypad.getInput();
-                if (theTotalBalance<0) {
-                    screen.displayMessageLine("\nStarting balance cannot be negative!");
-                }
-            } while (theTotalBalance < 0);       
-        }
+        do {
+            screen.displayMessageLine("\nPlease input new user starting balance : ");
+            theTotalBalance = theAvailableBalance = keypad.getInput();
+            if (theTotalBalance<0) {
+                screen.displayMessageLine("\nStarting balance cannot be negative!");
+            }
+        } while (theTotalBalance < 0);       
+
         
-        bankDatabase.incAccount(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance);
+        bankDatabase.incAccount(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance, theAccountType);
     }
     
     /**
