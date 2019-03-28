@@ -5,6 +5,8 @@
  */
 package com.appl.atm.controller;
 
+import com.appl.atm.model.Account;
+import com.appl.atm.model.BankDatabase;
 import static com.appl.atm.model.Constants.*;
 import com.appl.atm.model.Transaction;
 import com.appl.atm.model.Withdrawal;
@@ -31,7 +33,6 @@ public class WithdrawalController extends TransactionController {
         if (amount != 0) {
             transaction.setAmount(amount);
             int res = transaction.execute();
-
             if (res == WITHDRAW_SUCCESSFUL) {
                 getScreen().displayMessageLine("Your cash has been dispensed. Please take your cash now.");
             } else if (res == BALANCE_NOT_ENOUGH) {
@@ -58,18 +59,15 @@ public class WithdrawalController extends TransactionController {
         // array of amounts to correspond to menu numbers
         int[] amounts = {0, 20, 40, 60, 100, 200};
 
+        AccountView accView = new AccountView();
+        
+	
         // loop while no valid choice has been made
         while (userChoice == -1) {
             // display the withdrawal menu
-            screen.displayMessageLine("\nWithdrawal Menu:");
-            for (int i = 0; i < amounts.length - 1; i++) {
-                screen.displayMessageLine((i + 1) + " - $" + amounts[i + 1]);
-            }
-            screen.displayMessageLine(amounts.length + " - Another amount");
-            screen.displayMessageLine((amounts.length + 1) + " - Cancel transaction");
-            screen.displayMessage("\nChoose a withdrawal amount: ");
+            
 
-            int input = getKeypad().getInput(); // get user input through keypad
+            int input = accView.displayWithdrawalMenu(amounts); // get user input through keypad
 
             // determine how to proceed based on the input value
             switch (input) {

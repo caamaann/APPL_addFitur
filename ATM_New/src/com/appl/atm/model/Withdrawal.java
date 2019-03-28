@@ -37,13 +37,13 @@ public class Withdrawal extends Transaction {
             return REACH_LIMIT;
         }
 
-        if (cashDispenser.isSufficientCashAvailable(amount)) {
-            cashDispenser.dispenseCash(amount);
-            account.debit(amount);
-            return WITHDRAW_SUCCESSFUL;
-        } else {
-            return CASHDISPENSER_NOT_ENOUGH;
-        }
+	if (cashDispenser.isSufficientCashAvailable(amount)) {
+	    cashDispenser.dispenseCash(amount);
+	    account.credit(amount);
+	    return WITHDRAW_SUCCESSFUL;
+	} else {
+	    return CASHDISPENSER_NOT_ENOUGH;
+	}
     }
 
     /**

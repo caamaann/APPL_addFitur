@@ -15,25 +15,33 @@ import com.appl.atm.view.*;
  */
 public class AccountController{
     
- 
+    BankDatabase bankDatabase = new BankDatabase();
+    
     public int  displayMainMenu(int accountNumber){
-        BankDatabase bankDatabase = new BankDatabase();
-        
-        int menu;
-        Account account = bankDatabase.getAccount(accountNumber);
-        
-        if(account.toString().equals("Bisnis")){
-            BisnisView bisnis = new BisnisView();
-            menu = bisnis.displayMainMenu();
-        }else if(account.toString().equals("MasaDepan")){
-            MasaDepanView masaDepan = new MasaDepanView();
-            menu = masaDepan.displayMainMenu();
+        Account account = bankDatabase.getAccount(accountNumber);       
+        AccountView accountView = new AccountView();
+        int menu = accountView.displayMainMenu();
+        if(account.getAccountType().equals("Siswa") && menu == 4 ){
+          System.out.println("Invalid Selection .. \n Student Account cannot do Transfer");
+          return displayMainMenu(accountNumber);
         }else{
-            SiswaView siswa = new SiswaView();
-            menu = siswa.displayMainMenu();
+          return menu;  
         }
-        
-        return menu;
+          
     }
     
+    public int  displayWithdrawalMenu(int accountNumber, int amount[]){
+        Account account = bankDatabase.getAccount(accountNumber);
+        AccountView accountView = new AccountView();
+        int menu = accountView.displayWithdrawalMenu(amount);
+        if(account.getAccountType().equals("Siswa") && menu > 1 ){
+            System.out.println("Invalid Selection .. \n Student Account withdrawal limit is $20");
+            return displayWithdrawalMenu(accountNumber,amount);
+        }else if(account.getAccountType().equals("MasaDepan") && menu > 4){
+            System.out.println("Invalid Selection .. \n Masa Depan Account withdrawal limit is $100");
+            return displayWithdrawalMenu(accountNumber,amount);
+        }else{
+            return displayWithdrawalMenu(accountNumber,amount);
+        }
+    } 
 }

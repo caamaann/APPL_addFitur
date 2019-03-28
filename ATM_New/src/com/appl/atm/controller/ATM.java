@@ -7,7 +7,6 @@ package com.appl.atm.controller;
 
 import com.appl.atm.model.BalanceInquiry;
 import com.appl.atm.model.BankDatabase;
-import com.appl.atm.model.Admin;
 import com.appl.atm.model.CashDispenser;
 import com.appl.atm.model.Deposit;
 import com.appl.atm.model.DepositSlot;
@@ -16,6 +15,7 @@ import com.appl.atm.model.Withdrawal;
 import com.appl.atm.view.Keypad;
 import com.appl.atm.view.Screen;
 import static com.appl.atm.model.Constants.*;
+import java.io.IOException;
 
 /**
  *
@@ -34,16 +34,6 @@ public class ATM {
     private int currentPIN;
 
 
-    private static final int BALANCE_INQUIRY = 1;
-    private static final int WITHDRAWAL = 2;
-    private static final int DEPOSIT = 3;
-    private static final int TRANSFER = 4;
-    private static final int PASSWORD = 5;
-    private static final int BANK_STATEMENT = 6;
-    private static final int TRANSFER_HISTORY = 7;
-    private static final int WITHDRAWAL_HISTORY = 8;
-    private static final int EXIT = 0;
-    
     public ATM() {
 	userAuthenticated = false;
         adminAuthenticated = false;
@@ -56,7 +46,7 @@ public class ATM {
     }
 
     // start ATM 
-    public void run() {
+    public void run() throws IOException {
 	// welcome and authenticate user; perform transactions
 	while (true) {
 	    // loop while user is not yet authenticated
@@ -126,7 +116,7 @@ public class ATM {
     }
     
     // display the main menu and perform transactions
-    private void performTransactions() {
+    private void performTransactions() throws IOException {
 	// local variable to store transaction currently being processed
 	Transaction currentTransaction = null;
 	TransactionController currentTransactionController = null;
@@ -172,6 +162,10 @@ public class ATM {
                 case PASSWORD:
                     break;
                 case BANK_STATEMENT:
+
+                    BankStatementController bankStatementController = new BankStatementController();
+                    bankStatementController.displayBankStatement(currentAccountNumber);
+
                     break;
 		case EXIT: // user chose to terminate session
 		    screen.displayMessageLine("\nExiting the system...");

@@ -108,8 +108,10 @@ public class Account {
         this.WithdrawToday += WithdrawToday;
     }
 
-    public void payTax() {
+    public void displayMainMenu() {
+    }
 
+    public void payTax() {
     }
 
     public boolean isAvailableForWithdraw(double amount) {
