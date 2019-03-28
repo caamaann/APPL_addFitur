@@ -5,6 +5,8 @@
  */
 package com.appl.atm.model;
 
+import static com.appl.atm.model.Constants.*;
+
 /**
  *
  * @author Sophia Gianina Daeli
@@ -24,7 +26,16 @@ public class Transfer extends Transaction {
     
     @Override
     public int execute() {
-        return 0;
+        Account account = getBankDatabase().getAccount(getAccountNumber());
+
+        if (account.getAvailableBalance() < amount) {
+            return BALANCE_NOT_ENOUGH;
+        } else if (account.getMaxTransfer() < amount) {
+            return REACH_LIMIT;
+        } else {
+            account.credit(amount);
+            return WITHDRAW_SUCCESSFUL;
+        }
     }    
 
     public int getAmount() {
