@@ -5,7 +5,9 @@
  */
 package com.appl.atm.controller;
 
-import static com.appl.atm.model.Constants.*;
+import com.appl.atm.model.Account;
+import com.appl.atm.model.BankDatabase;
+import com.appl.atm.view.*;
 import com.appl.atm.model.Admin;
 
 /**
