@@ -14,6 +14,7 @@ import com.appl.atm.view.*;
  * @author ACER
  */
 public class AccountController{
+    
     BankDatabase bankDatabase = new BankDatabase();
     
     public int  displayMainMenu(int accountNumber){
@@ -43,6 +44,5 @@ public class AccountController{
             return displayWithdrawalMenu(accountNumber,amount);
         }
     }
-    
-   
+ 
 }

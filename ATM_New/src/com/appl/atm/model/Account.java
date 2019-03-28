@@ -18,8 +18,8 @@ public class Account {
     private boolean isBlocked;
     private int transferToday = 0;
     private int WithdrawToday = 0;
-    
-    public static int MAXWITHDRAW;
+
+    public int MAXWITHDRAW;
     public int MAXTRANSFER;
     public int MONTHLY_ADM = 1;
     private static int UNBLOCK_COST = 0; // balance cost for unblocking account
@@ -48,8 +48,8 @@ public class Account {
     public double getTotalBalance() {
         return totalBalance;
     }
-    
-    public void setAvailableBalance(double amount){
+
+    public void setAvailableBalance(double amount) {
         this.availableBalance += amount;
     }
 
@@ -107,25 +107,35 @@ public class Account {
     public void setWithdrawToday(double WithdrawToday) {
         this.WithdrawToday += WithdrawToday;
     }
-    
 
     public void displayMainMenu(){
     }
-    
-    public void payTax(){
-        
+
+    public void payTax() {
     }
-    
-    public boolean isAvailableForWithdraw(double amount){
-       return true;
+
+    public boolean isAvailableForWithdraw(double amount) {
+        return true;
     }
-    
-    public boolean isAvailableForTransfer(double amount){
-       return true;
+
+    public boolean isAvailableForTransfer(double amount) {
+        return true;
     }
-    
-    public int getUnblockCost(){
+
+    public int getUnblockCost() {
         return Account.UNBLOCK_COST;
 
+    }
+
+    public int getMaxWithdraw() {
+        return MAXWITHDRAW;
+    }
+
+    public int getMaxTransfer() {
+        return MAXTRANSFER;
+    }
+
+    public int getMonthlyAdm() {
+        return MONTHLY_ADM;
     }
 }

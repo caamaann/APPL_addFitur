@@ -52,6 +52,7 @@ public class ATM {
     private int loginAttempt = 0;
     private int currentPIN;
 
+
     public ATM() {
 	userAuthenticated = false;
         adminAuthenticated = false;
@@ -86,7 +87,6 @@ public class ATM {
                 currentAccountNumber = 0; // reset before next ATM session
             }
             
-	    
 	    userAuthenticated = false; // reset before next ATM session
             adminAuthenticated = false; // reset before next ATM session
 	    currentAccountNumber = 0; // reset before next ATM session
