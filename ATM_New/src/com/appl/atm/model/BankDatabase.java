@@ -75,7 +75,22 @@ public class BankDatabase {
         return getAccount(userAccountNumber) != null;
     }
     
-    public void incAccount(int theAccountNumber, int thePIN, double theAvailableBalance, double theTotalBalance) {
-        accounts.add( new Bisnis(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance));
+    public boolean checkAvail(int accountNumber) {
+        int ak;
+        for (ak = 0; ak < accounts.size(); ak++) {
+            if (accountNumber == accounts.get(ak).getAccountNumber()) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public void incAccount(int theAccountNumber, int thePIN, double theAvailableBalance, double theTotalBalance, int theAccountType) {
+        switch(theAccountType){
+            case 1: accounts.add( new Bisnis(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance)); break;
+            case 2: accounts.add( new Siswa(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance)); break;
+            case 3: accounts.add( new MasaDepan(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance)); break;
+                
+        }
     }
 }
