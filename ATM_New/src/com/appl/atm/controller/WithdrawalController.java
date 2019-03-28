@@ -87,7 +87,7 @@ public class WithdrawalController extends TransactionController {
                 case 6:
                     screen.displayMessage("\nInput amount: ");
                     aAmount = keypad.getInput();
-                    if (aAmount <= 0 || aAmount % 20 != 0) {
+                    if (aAmount < 0 || aAmount % 20 != 0) {
                         screen.displayMessageLine("\nInvalid amount.");
                     } else {
                         userChoice = aAmount;

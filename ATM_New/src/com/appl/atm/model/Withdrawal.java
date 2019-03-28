@@ -39,7 +39,7 @@ public class Withdrawal extends Transaction {
 
 	if (cashDispenser.isSufficientCashAvailable(amount)) {
 	    cashDispenser.dispenseCash(amount);
-	    account.credit(amount);
+	    account.debit(amount);
 	    return WITHDRAW_SUCCESSFUL;
 	} else {
 	    return CASHDISPENSER_NOT_ENOUGH;

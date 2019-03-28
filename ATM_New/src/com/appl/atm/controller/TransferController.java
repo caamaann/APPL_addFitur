@@ -8,6 +8,7 @@ package com.appl.atm.controller;
 import static com.appl.atm.model.Constants.*;
 import com.appl.atm.model.Transaction;
 import com.appl.atm.model.Transfer;
+import com.appl.atm.view.AccountView;
 import com.appl.atm.view.Keypad;
 import com.appl.atm.view.Screen;
 
@@ -16,18 +17,32 @@ import com.appl.atm.view.Screen;
  * @author Sophia Gianina Daeli
  */
 public class TransferController extends TransactionController {
-    
+
     private Transfer transaction;
     private int receiver;
+    private int sender;
+    
+    
+    AccountView accView = new AccountView();
 
     public TransferController(Transaction theTransaction, Keypad theKeypad, Screen theScreen) {
         super(theKeypad, theScreen);
         transaction = (Transfer) theTransaction;
+        
+        System.out.println(theTransaction.getAccountNumber());
     }
 
     @Override
     public int run() {
         int amount = displayMenuOfAmounts();
+        receiver = accView.transferAskReceiverAccount();
+
+        boolean destValid = receiverValidation();
+        if (destValid == false) {
+            getScreen().displayMessageLine("Your destination is invalid.");
+
+            amount = 0; // further process will not be done
+        }
 
         if (amount != 0) {
             transaction.setAmount(amount);
@@ -37,7 +52,7 @@ public class TransferController extends TransactionController {
                 getScreen().displayMessageLine("Transfer successful.");
             } else if (res == BALANCE_NOT_ENOUGH) {
                 getScreen().displayMessageLine("Your balance isn't enough for the transaction. "
-                + "Please enter another amount.");
+                        + "Please enter another amount.");
             } else if (res == REACH_LIMIT) {
                 getScreen().displayMessageLine("You have exceed your transfer limit.");
             }
@@ -45,9 +60,9 @@ public class TransferController extends TransactionController {
 
         return 0;
     }
-
     // display a menu of withdrawal amounts and the option to cancel;
     // return the chosen amount or 0 if the user chooses to cancel
+
     private int displayMenuOfAmounts() {
         int userChoice = -1; // local variable to store return value
         int aAmount; // (another amount) untuk pilihan input manual
@@ -61,21 +76,14 @@ public class TransferController extends TransactionController {
         // loop while no valid choice has been made
         while (userChoice == -1) {
             // display the withdrawal menu
-            screen.displayMessageLine("\nTransfer Menu:");
-            for (int i = 0; i < amounts.length - 1; i++) {
-                screen.displayMessageLine((i + 1) + " - $" + amounts[i + 1]);
-            }
-            screen.displayMessageLine(amounts.length + " - Another amount");
-            screen.displayMessageLine((amounts.length + 1) + " - Cancel transaction");
-            screen.displayMessage("\nChoose amount: ");
 
-            int input = getKeypad().getInput(); // get user input through keypad
+            int input = accView.displayTransferMenu(amounts); // get user input through keypad
 
             // determine how to proceed based on the input value
             switch (input) {
-                case 1: // if the user chose a withdrawal amount 
-                case 2: // (i.e., chose option 1, 2, 3, 4 or 5), return the
-                case 3: // corresponding amount from amounts array
+                case 1:
+                case 2:
+                case 3:
                 case 4:
                 case 5:
                     userChoice = amounts[input]; // save user's choice
@@ -83,7 +91,7 @@ public class TransferController extends TransactionController {
                 case 6:
                     screen.displayMessage("\nInput amount: ");
                     aAmount = keypad.getInput();
-                    if (aAmount <= 0 || aAmount % 20 != 0) {
+                    if (aAmount < 0 || aAmount % 20 != 0) {
                         screen.displayMessageLine("\nInvalid amount.");
                     } else {
                         userChoice = aAmount;
@@ -100,5 +108,12 @@ public class TransferController extends TransactionController {
         }
 
         return userChoice; // return withdrawal amount or CANCELED
+    }
+
+    public boolean receiverValidation() {
+        if (receiver == transaction.getAccountNumber()) {
+            return false;
+        }
+        return true;
     }
 }

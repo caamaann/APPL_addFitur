@@ -15,6 +15,7 @@ import com.appl.atm.model.Withdrawal;
 import com.appl.atm.view.Keypad;
 import com.appl.atm.view.Screen;
 import static com.appl.atm.model.Constants.*;
+import com.appl.atm.model.Transfer;
 import java.io.IOException;
 
 /**
@@ -158,6 +159,11 @@ public class ATM {
 		    currentTransactionController.run(); // execute transaction
 		    break;
                 case TRANSFER:
+		    currentTransaction
+			    = createTransaction(mainMenuSelection);
+		    currentTransactionController
+			    = new TransferController(currentTransaction, keypad, screen);
+		    currentTransactionController.run(); // execute transaction
                     break;
                 case PASSWORD:
                     break;
@@ -226,6 +232,10 @@ public class ATM {
 	    case DEPOSIT:
 		temp = new Deposit(
 			currentAccountNumber, bankDatabase, depositSlot);
+		break;
+	    case TRANSFER:
+		temp = new Transfer(
+			currentAccountNumber, bankDatabase, cashDispenser);
 		break;
 	}
 

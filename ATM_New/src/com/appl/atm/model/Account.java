@@ -60,12 +60,13 @@ public class Account {
     }
 
     public void credit(double amount) {
-        this.availableBalance -= amount;
-        this.totalBalance -= amount;
+        this.availableBalance += amount;
+        this.totalBalance += amount;
     }
 
     public void debit(double amount) {
-        this.totalBalance += amount;
+        this.totalBalance -= amount;
+        this.availableBalance -= amount;
     }
 
     public int getAccountNumber() {
@@ -130,8 +131,16 @@ public class Account {
         return MAXWITHDRAW;
     }
 
+    public void setMaxWithdraw(int MAXWITHDRAW) {
+        this.MAXWITHDRAW += MAXWITHDRAW;
+    }
+
     public int getMaxTransfer() {
         return MAXTRANSFER;
+    }
+
+    public void setMaxTransfer(int MAXTRANSFER) {
+        this.MAXTRANSFER += MAXTRANSFER;
     }
 
     public int getMonthlyAdm() {
