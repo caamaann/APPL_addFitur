@@ -303,7 +303,7 @@ public class ATM {
     }
 
     public boolean checkAccountType() {
-        if (bankDatabase.getAccount(currentAccountNumber).getAccountType().equals("com.appl.atm.model.AccountStudent")) {
+        if (bankDatabase.getAccount(currentAccountNumber).getAccountType().equals("AccountStudent")) {
             return false;
         }
         return true;
