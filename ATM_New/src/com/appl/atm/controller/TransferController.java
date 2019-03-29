@@ -19,17 +19,13 @@ import com.appl.atm.view.Screen;
 public class TransferController extends TransactionController {
 
     private Transfer transaction;
-    private int receiver;
-    private int sender;
-    
+    private int receiver;    
     
     AccountView accView = new AccountView();
 
     public TransferController(Transaction theTransaction, Keypad theKeypad, Screen theScreen) {
         super(theKeypad, theScreen);
         transaction = (Transfer) theTransaction;
-        
-        System.out.println(theTransaction.getAccountNumber());
     }
 
     @Override
@@ -39,7 +35,7 @@ public class TransferController extends TransactionController {
 
         boolean destValid = receiverValidation();
         if (destValid == false) {
-            getScreen().displayMessageLine("Your destination is invalid.");
+            getScreen().displayMessageLine("\nYour destination is invalid.");
 
             amount = 0; // further process will not be done
         }
@@ -49,12 +45,12 @@ public class TransferController extends TransactionController {
             int res = transaction.execute();
 
             if (res == WITHDRAW_SUCCESSFUL) {
-                getScreen().displayMessageLine("Transfer successful.");
+                getScreen().displayMessageLine("\nTransfer successful.");
             } else if (res == BALANCE_NOT_ENOUGH) {
-                getScreen().displayMessageLine("Your balance isn't enough for the transaction. "
+                getScreen().displayMessageLine("\nYour balance isn't enough for the transaction. "
                         + "Please enter another amount.");
             } else if (res == REACH_LIMIT) {
-                getScreen().displayMessageLine("You have exceed your transfer limit.");
+                getScreen().displayMessageLine("\nYou have exceed your transfer limit.");
             }
         }
 
@@ -91,7 +87,7 @@ public class TransferController extends TransactionController {
                 case 6:
                     screen.displayMessage("\nInput amount: ");
                     aAmount = keypad.getInput();
-                    if (aAmount < 0 || aAmount % 20 != 0) {
+                    if (aAmount <= 0 || aAmount % 20 != 0) {
                         screen.displayMessageLine("\nInvalid amount.");
                     } else {
                         userChoice = aAmount;

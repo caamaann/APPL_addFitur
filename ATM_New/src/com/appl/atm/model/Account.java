@@ -93,22 +93,6 @@ public class Account {
         return this.getClass().toString().substring(6);
     }
 
-    public int getTransferToday() {
-        return transferToday;
-    }
-
-    public void setTransferToday(double transferToday) {
-        this.transferToday += transferToday;
-    }
-
-    public int getWithdrawToday() {
-        return WithdrawToday;
-    }
-
-    public void setWithdrawToday(double WithdrawToday) {
-        this.WithdrawToday += WithdrawToday;
-    }
-
     public void displayMainMenu() {
     }
 
@@ -127,23 +111,27 @@ public class Account {
         return Account.UNBLOCK_COST;
     }
 
-    public int getMaxWithdraw() {
+    public int getMAXWITHDRAW() {
         return MAXWITHDRAW;
     }
 
-    public void setMaxWithdraw(int MAXWITHDRAW) {
-        this.MAXWITHDRAW += MAXWITHDRAW;
-    }
-
-    public int getMaxTransfer() {
+    public int getMAXTRANSFER() {
         return MAXTRANSFER;
     }
-
-    public void setMaxTransfer(int MAXTRANSFER) {
-        this.MAXTRANSFER += MAXTRANSFER;
+    
+    public int getTransferToday() {
+        return transferToday;
     }
 
-    public int getMonthlyAdm() {
-        return MONTHLY_ADM;
+    public void setTransferToday(double transferToday) {
+        this.transferToday += transferToday;
+    }
+
+    public int getWithdrawToday() {
+        return WithdrawToday;
+    }
+
+    public void setWithdrawToday(double WithdrawToday) {
+        this.WithdrawToday += WithdrawToday;
     }
 }

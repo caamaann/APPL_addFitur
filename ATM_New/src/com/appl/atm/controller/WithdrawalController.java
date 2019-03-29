@@ -34,16 +34,16 @@ public class WithdrawalController extends TransactionController {
             int res = transaction.execute();
             switch (res) {
                 case WITHDRAW_SUCCESSFUL:
-                    getScreen().displayMessageLine("Your cash has been dispensed. Please take your cash now.");
+                    getScreen().displayMessageLine("\nYour cash has been dispensed. Please take your cash now.");
                     break;
                 case BALANCE_NOT_ENOUGH:
-                    getScreen().displayMessageLine("Your balance isn't enough for this withdrawal.");
+                    getScreen().displayMessageLine("\nYour balance isn't enough for this withdrawal.");
                     break;
                 case CASHDISPENSER_NOT_ENOUGH:
-                    getScreen().displayMessageLine("Cash dispenser doesn't have sufficient amount of cash.");
+                    getScreen().displayMessageLine("\nCash dispenser doesn't have sufficient amount of cash.");
                     break;
                 case REACH_LIMIT:
-                    getScreen().displayMessageLine("You have exceed your withdrawal limit.");
+                    getScreen().displayMessageLine("\nYou have exceed your withdrawal limit.");
                     break;
                 default:
                     break;
@@ -87,7 +87,7 @@ public class WithdrawalController extends TransactionController {
                 case 6:
                     screen.displayMessage("\nInput amount: ");
                     aAmount = keypad.getInput();
-                    if (aAmount < 0 || aAmount % 20 != 0) {
+                    if (aAmount <= 0 || aAmount % 20 != 0) {
                         screen.displayMessageLine("\nInvalid amount.");
                     } else {
                         userChoice = aAmount;

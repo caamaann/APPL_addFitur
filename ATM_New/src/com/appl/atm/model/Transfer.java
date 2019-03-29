@@ -27,16 +27,19 @@ public class Transfer extends Transaction {
     @Override
     public int execute() {
         Account account = getBankDatabase().getAccount(getAccountNumber());
+        account.setTransferToday(amount);
 
         if (account.getAvailableBalance() < amount) {
+        account.setTransferToday(amount);
             return BALANCE_NOT_ENOUGH;
-        } else if (account.getMaxTransfer() < amount) {
+        } else if (account.getTransferToday() > account.getMAXTRANSFER()) {
+        account.setTransferToday(amount);
             return REACH_LIMIT;
         } else {
             account.credit(amount);
             return WITHDRAW_SUCCESSFUL;
         }
-    }    
+    }
 
     public int getAmount() {
         return amount;
