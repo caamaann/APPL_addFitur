@@ -40,4 +40,7 @@ public class CashDispenser {
         return this.count;
     }
 
+    public void setCount(int amount) {
+        count += amount;
+    }
 }

@@ -9,6 +9,7 @@ import static com.appl.atm.model.Constants.*;
 import com.appl.atm.model.Admin;
 import com.appl.atm.model.Account;
 import com.appl.atm.model.BankDatabase;
+import com.appl.atm.model.CashDispenser;
 import com.appl.atm.view.AdminView;
 import com.appl.atm.view.Keypad;
 import com.appl.atm.view.Screen;
@@ -18,37 +19,52 @@ import com.appl.atm.view.Screen;
  * @author Imanda Syahrul R
  */
 public class AdminController {
-    
+
     private Keypad keypad; // reference to keypad
     private Screen screen;
     private BankDatabase bankDatabase;
-    
-    public int  displayMainMenu(int accountNumber){
+    private CashDispenser cashDispenser;
+
+    AdminView admin = new AdminView();
+
+    public int displayMainMenu(int accountNumber) {
         BankDatabase bankDatabase = new BankDatabase();
-        
+
         int menu;
         Account account = bankDatabase.getAccount(accountNumber);
-        
-  
-            AdminView admin = new AdminView();
-            menu = admin.displayAdminMenu();
-       
+
+        menu = admin.displayAdminMenu();
+
         return menu;
     }
-    
-    
-    public AdminController(BankDatabase theBankDatabase, Keypad theKeypad, Screen theScreen) {
+
+    public AdminController(BankDatabase theBankDatabase, CashDispenser theCashDispenser, Keypad theKeypad, Screen theScreen) {
         bankDatabase = theBankDatabase;
-	keypad = theKeypad;
-	screen = theScreen;
+        keypad = theKeypad;
+        screen = theScreen;
+        cashDispenser = theCashDispenser;
     }
-    
-    void AddNasabah(){
+
+    /**
+     * @return the keypad
+     */
+    public Keypad getKeypad() {
+        return keypad;
+    }
+
+    /**
+     * @return the screen
+     */
+    public Screen getScreen() {
+        return screen;
+    }
+
+    void AddNasabah() {
         boolean accAvail = false;
         double theTotalBalance = 0, theAvailableBalance = 0;
         int theAccountNumber;
         int theAccountType;
-        
+
         do {
             screen.displayMessageLine("\nChoose what type of user to create : ");
             screen.displayMessageLine("\n1.Bisnis");
@@ -56,8 +72,8 @@ public class AdminController {
             screen.displayMessageLine("\n3.Masa depan");
             screen.displayMessageLine("\nInput the number of your choice : ");
             theAccountType = keypad.getInput();
-        } while(theAccountType<1 || theAccountType>3);
-        
+        } while (theAccountType < 1 || theAccountType > 3);
+
         do {
             screen.displayMessage("\nPlease input new user account number : ");
             theAccountNumber = keypad.getInput();
@@ -67,35 +83,31 @@ public class AdminController {
             } else {
                 screen.displayMessageLine("\nFailed! Account number is already in use.");
             }
-        } while(!accAvail);
-        
+        } while (!accAvail);
+
         screen.displayMessage("\nPlease input new user pin : ");
         int thePIN = keypad.getInput();
         /* TODO : periksa apakah admin*/
         do {
             screen.displayMessageLine("\nPlease input new user starting balance : ");
             theTotalBalance = theAvailableBalance = keypad.getInput();
-            if (theTotalBalance<0) {
+            if (theTotalBalance < 0) {
                 screen.displayMessageLine("\nStarting balance cannot be negative!");
             }
-        } while (theTotalBalance < 0);       
+        } while (theTotalBalance < 0);
 
-        
         bankDatabase.incAccount(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance, theAccountType);
     }
-    
-    /**
-     * @return the keypad
-     */
-    public Keypad getKeypad() {
-	return keypad;
-    }
 
-    /**
-     * @return the screen
-     */
-    public Screen getScreen() {
-	return screen;
+    void addCashDispenser() {
+        int amount = admin.displayAddCashDispenser();
+        
+        System.out.println("!" + cashDispenser.getCount());
+        if (amount <= 0 || amount % 20 != 0) {
+            screen.displayMessageLine("\nInvalid amount.");
+        } else {
+            cashDispenser.setCount(amount);
+            screen.displayMessageLine("\nSuccessfully added to dispenser.");
+        }
     }
-
 }

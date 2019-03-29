@@ -5,18 +5,20 @@
  */
 package com.appl.atm.controller;
 
+import com.appl.atm.controller.TanggalController;
+        
 import com.appl.atm.model.BalanceInquiry;
 import com.appl.atm.model.BankDatabase;
-import com.appl.atm.model.Admin;
 import com.appl.atm.model.CashDispenser;
 import com.appl.atm.model.Deposit;
 import com.appl.atm.model.DepositSlot;
 import com.appl.atm.model.Transaction;
 import com.appl.atm.model.Withdrawal;
+import com.appl.atm.model.Transfer;
+
 import com.appl.atm.view.Keypad;
 import com.appl.atm.view.Screen;
-import static com.appl.atm.model.Constants.*;
-import com.appl.atm.model.Transfer;
+import com.appl.atm.view.ShowCashDispenser;
 import java.io.IOException;
 
 /**
@@ -35,6 +37,8 @@ public class ATM {
     private BankDatabase bankDatabase; // account information database
     private AdminController adminController;
     private AccountController accountController;
+    private ShowCashDispenser showCashDispenser;
+    private TanggalController tanggalController;
 
     private static final int BALANCE_INQUIRY = 1;
     private static final int WITHDRAWAL = 2;
@@ -45,30 +49,30 @@ public class ATM {
     private static final int TRANSFER_HISTORY = 7;
     private static final int WITHDRAWAL_HISTORY = 8;
     private static final int EXIT = 0;
-    
-    
+
     private static final int ADD_NASABAH = 1;
     private static final int UNBLOCK = 2;
     private static final int VALIDATE = 3;
-    private static final int MONEY_DISPEN = 4;
-    private static final int ADD_TANGGAL = 5;
-    
+    private static final int SEE_MONEY_DISPENSER = 4;
+    private static final int ADD_MONEY_DISPENSER = 5;
+    private static final int ADD_TANGGAL = 6;
+
     private int loginAttempt = 0;
     private int currentPIN;
-
 
     public ATM() {
         userAuthenticated = false;
         adminAuthenticated = false;
-	currentAccountNumber = 0;
-	screen = new Screen();
-	keypad = new Keypad();
-	cashDispenser = new CashDispenser();
-	depositSlot = new DepositSlot();
-	bankDatabase = new BankDatabase();
-        adminController = new AdminController(bankDatabase, keypad, screen);
+        currentAccountNumber = 0;
+        screen = new Screen();
+        keypad = new Keypad();
+        cashDispenser = new CashDispenser();
+        depositSlot = new DepositSlot();
+        bankDatabase = new BankDatabase();
+        adminController = new AdminController(bankDatabase, cashDispenser, keypad, screen);
         accountController = new AccountController(bankDatabase, keypad, screen);
-        
+        showCashDispenser = new ShowCashDispenser();
+        tanggalController = new TanggalController();
     }
 
     // start ATM 
@@ -149,9 +153,9 @@ public class ATM {
 
         boolean userExited = false; // user has not chosen to exit
 
-	// loop while user has not chosen option to exit system
-	while (!userExited) {
-	    // show main menu and get user selection
+        // loop while user has not chosen option to exit system
+        while (!userExited) {
+            // show main menu and get user selection
 //	    AccountController acc = new AccountController();   
             int mainMenuSelection = accountController.displayMainMenu(currentAccountNumber);
 
@@ -193,8 +197,8 @@ public class ATM {
                                 = new TransferController(currentTransaction, keypad, screen);
                         currentTransactionController.run(); // execute transaction
                     } else {
-                        screen.displayMessageLine("\nYour account can't be used to " +
-                                "do transfer.");
+                        screen.displayMessageLine("\nYour account can't be used to "
+                                + "do transfer.");
                     }
                     break;
                 case PASSWORD:
@@ -203,21 +207,21 @@ public class ATM {
                     BankStatementController bankStatementController = new BankStatementController();
                     bankStatementController.displayBankStatement(currentAccountNumber);
                     break;
-		case EXIT: // user chose to terminate session
-		    screen.displayMessageLine("\nExiting the system...");
-		    userExited = true; // this ATM session should end
-		    break;
-		    
-		default: // 
-		    screen.displayMessageLine(
-			    "\nYou did not enter a valid selection. Try again.");
-		    break;
-	    }
-	}
+                case EXIT: // user chose to terminate session
+                    screen.displayMessageLine("\nExiting the system...");
+                    userExited = true; // this ATM session should end
+                    break;
+
+                default: // 
+                    screen.displayMessageLine(
+                            "\nYou did not enter a valid selection. Try again.");
+                    break;
+            }
+        }
     }
-    
+
     private void performAdmins() {
-        
+
         boolean userExited = false; // user has not chosen to exit
 
         // loop while user has not chosen option to exit system
@@ -236,10 +240,14 @@ public class ATM {
                     break;
                 case VALIDATE:
                     break;
-                case MONEY_DISPEN:
-                   
+                case SEE_MONEY_DISPENSER:
+                    showCashDispenser.showCashDispenser();
+                    break;
+                case ADD_MONEY_DISPENSER:
+                    adminController.addCashDispenser();
                     break;
                 case ADD_TANGGAL:
+                    tanggalController.menuTanggal();
                     break;
                 case EXIT: // user chose to terminate session
                     screen.displayMessageLine("\nExiting the system...");
