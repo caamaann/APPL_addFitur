@@ -186,6 +186,7 @@ public class ATM {
                 case BANK_STATEMENT:
                     BankStatementController bankStatementController = new BankStatementController();
                     bankStatementController.displayBankStatement(currentAccountNumber);
+                    System.out.println("\n menuBankStatement");
                     break;
 		case EXIT: // user chose to terminate session
 		    screen.displayMessageLine("\nExiting the system...");

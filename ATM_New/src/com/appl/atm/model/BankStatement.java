@@ -33,8 +33,13 @@ public class BankStatement {
      */
     public void setIdStatement(int idStatement) {
         this.idStatement = idStatement;
+        System.out.println("setId");        
+        System.out.println("id = " + idStatement);
+
+        
     }
 
+    
     /**
      * @return the account
      */
@@ -47,6 +52,9 @@ public class BankStatement {
      */
     public void setAccount(int account) {
         this.account = account;
+        System.out.println("setAccount");        
+        System.out.println("id = " + account);
+
     }
 
     /**

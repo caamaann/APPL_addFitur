@@ -20,10 +20,12 @@ public class BankStatementView {
     
     BankStatementController bankStatement = new BankStatementController();
     List<BankStatement> list = bankStatement.getList();
-       
+    System.out.println("\n masukView");
+          
       if(!list.isEmpty()){
         int size;
-        
+        System.out.println("\n masukViewIf");
+       
         size = list.size();
         
         System.out.println();
@@ -32,7 +34,11 @@ public class BankStatementView {
         System.out.println("=========================================================================================================");
         
         for(int i = 0;i < size;i++){
+            System.out.println("\n masukViewFor");
+       
             if(list.get(i).getAccount() == accountNumber){
+                System.out.println("\n masukIf2");
+       
 //               System.out.print(list.get(i).getIdStatement()+"\t");
                 System.out.print(list.get(i).getDate()+"\t");
                 System.out.print(list.get(i).getDescription()+"\t");
