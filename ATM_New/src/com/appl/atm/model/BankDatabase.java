@@ -14,9 +14,12 @@ import java.util.ArrayList;
 public class BankDatabase {
 
     private ArrayList<Account> accounts; // array of Accounts
-
+    private ArrayList<Integer> accountBlocked;
+    
     public BankDatabase() {
         accounts = new ArrayList<Account>();
+        accountBlocked = new ArrayList<Integer>();
+        
         accounts.add(new Admin(00000, 00000, 0.0, 0.0));
         accounts.add(new AccountBussiness(1234, 4321, 10000.0, 12000.0));
         accounts.add(new AccountStudent(8765, 5678, 200.0, 200.0));
@@ -71,7 +74,7 @@ public class BankDatabase {
     public boolean isUserExist(int userAccountNumber) {
         return getAccount(userAccountNumber) != null;
     }
-    
+
     public boolean checkAvail(int accountNumber) {
         int ak;
         for (ak = 0; ak < accounts.size(); ak++) {
@@ -81,13 +84,37 @@ public class BankDatabase {
         }
         return true;
     }
-    
+
     public void incAccount(int theAccountNumber, int thePIN, double theAvailableBalance, double theTotalBalance, int theAccountType) {
-        switch(theAccountType){
-            case 1: accounts.add( new AccountBussiness(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance)); break;
-            case 2: accounts.add( new AccountStudent(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance)); break;
-            case 3: accounts.add( new AccountMasaDepan(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance)); break;
-                
+        switch (theAccountType) {
+            case 1:
+                accounts.add(new AccountBussiness(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance));
+                break;
+            case 2:
+                accounts.add(new AccountStudent(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance));
+                break;
+            case 3:
+                accounts.add(new AccountMasaDepan(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance));
+                break;
+
         }
+    }
+
+    public void blockAccount(int noAkun) {
+        getAccountBlocked().add(noAkun);
+
+        for (int i = 0; i < (int) accounts.size(); i++) {
+            if (accounts.get(i).getAccountNumber() == noAkun) {
+                accounts.get(i).blockUser();
+                return;
+            }
+        }
+    }
+    
+    public ArrayList<Account> getAccounts() {
+        return accounts;
+    }
+    public ArrayList<Integer> getAccountBlocked() {
+        return accountBlocked;
     }
 }

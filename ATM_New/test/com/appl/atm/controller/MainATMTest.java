@@ -8,6 +8,7 @@ package com.appl.atm.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -45,7 +46,7 @@ public class MainATMTest {
      * Test of main method, of class MainATM.
      */
     @Test
-    public void testMain() throws FileNotFoundException {
+    public void testMain() throws FileNotFoundException, IOException {
         System.out.println("main");
         String[] args = null;
         final InputStream original = System.in;

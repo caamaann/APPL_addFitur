@@ -13,6 +13,7 @@ import com.appl.atm.model.CashDispenser;
 import com.appl.atm.view.AdminView;
 import com.appl.atm.view.Keypad;
 import com.appl.atm.view.Screen;
+import java.util.ArrayList;
 
 /**
  *
@@ -101,7 +102,7 @@ public class AdminController {
 
     void addCashDispenser() {
         int amount = admin.displayAddCashDispenser();
-        
+
         System.out.println("!" + cashDispenser.getCount());
         if (amount <= 0 || amount % 20 != 0) {
             screen.displayMessageLine("\nInvalid amount.");
@@ -109,5 +110,37 @@ public class AdminController {
             cashDispenser.setCount(amount);
             screen.displayMessageLine("\nSuccessfully added to dispenser.");
         }
+    }
+
+    public void unblockNasabah(int noAkun) {
+        System.out.println(getBlocked());
+        for (int i = 0; i < (int) getBlocked().size(); i++) {
+            if (noAkun == getBlocked().get(i)) {
+                for (int cari = 0; i < (int) getAccounts().size(); cari++) {
+                    if (noAkun == getAccounts().get(i).getAccountNumber()) {
+                        if (getAccounts().get(i).getAccountType().equals("AccountBussiness")) {
+                            getAccounts().get(i).setUNBLOCK_COST(3);
+                            getAccounts().get(i).setTotalBalance(getAccounts().get(i).getTotalBalance() - getAccounts().get(i).getUnblockCost());
+                            return;
+                        } else if (getAccounts().get(i).getAccountType().equals("AccountMasaDepan")) {
+                            getAccounts().get(i).setUNBLOCK_COST(2);
+                            getAccounts().get(i).setTotalBalance(getAccounts().get(i).getTotalBalance() - getAccounts().get(i).getUnblockCost());
+                            return;
+                        }
+                    }
+                }
+            }
+            getBlocked().remove(i);
+            screen.displayMessageLine("Unblock Telah Berhasil");
+        }
+        
+    }
+
+    public ArrayList<Account> getAccounts() {
+        return bankDatabase.getAccounts();
+    }
+
+    public ArrayList<Integer> getBlocked() {
+        return bankDatabase.getAccountBlocked();
     }
 }

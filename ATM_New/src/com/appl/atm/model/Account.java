@@ -11,6 +11,13 @@ package com.appl.atm.model;
  */
 public class Account {
 
+    /**
+     * @param totalBalance the totalBalance to set
+     */
+    public void setTotalBalance(double totalBalance) {
+        this.totalBalance = totalBalance;
+    }
+
     private int accountNumber; // account number
     private int pin; // PIN for authentication
     private double availableBalance; // funds available for withdrawal
@@ -56,16 +63,16 @@ public class Account {
     /* INI ANEH, TRF kok NAMBAH? */
     public void transfer(double amount) {
         this.availableBalance += amount;
-        this.totalBalance += amount;
+        this.setTotalBalance(this.totalBalance + amount);
     }
 
     public void credit(double amount) {
         this.availableBalance += amount;
-        this.totalBalance += amount;
+        this.setTotalBalance(this.totalBalance + amount);
     }
 
     public void debit(double amount) {
-        this.totalBalance -= amount;
+        this.setTotalBalance(this.totalBalance - amount);
         this.availableBalance -= amount;
     }
 
@@ -134,4 +141,9 @@ public class Account {
     public void setWithdrawToday(double WithdrawToday) {
         this.WithdrawToday += WithdrawToday;
     }
+    
+    public void setUNBLOCK_COST(int UNBLOCK_COST) {
+        this.UNBLOCK_COST = UNBLOCK_COST;
+    }
+    
 }

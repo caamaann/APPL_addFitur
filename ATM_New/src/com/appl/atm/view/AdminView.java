@@ -5,6 +5,7 @@
  */
 package com.appl.atm.view;
 
+import com.appl.atm.controller.AdminController;
 /**
  *
  * @author ACER
@@ -13,7 +14,6 @@ public class AdminView {
 
     Screen screen = new Screen();
     Keypad keypad = new Keypad();
-
     public void AddNasabah() {
 
     }
@@ -25,7 +25,7 @@ public class AdminView {
         screen.displayMessageLine("3 - Validate Deposit");
         screen.displayMessageLine("4 - See Money Dispenser");
         screen.displayMessageLine("5 - Add Money Dispenser");
-        screen.displayMessageLine("6 - Add Tanggal");
+        screen.displayMessageLine("6 - Add Date");
         screen.displayMessageLine("0 - Exit\n");
         screen.displayMessage("Enter a choice: ");
         return keypad.getInput(); // return user's selection
@@ -33,6 +33,12 @@ public class AdminView {
 
     public int displayAddCashDispenser() {
         screen.displayMessage("\nSpecify the amount of $20 to be added: ");
+        return keypad.getInput();
+    }
+    
+    public int displayUnblockMenu(){
+        
+        screen.displayMessage("Insert account number you want to unblock: ");
         return keypad.getInput();
     }
 }

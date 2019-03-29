@@ -5,8 +5,6 @@
  */
 package com.appl.atm.controller;
 
-import com.appl.atm.controller.TanggalController;
-        
 import com.appl.atm.model.BalanceInquiry;
 import com.appl.atm.model.BankDatabase;
 import com.appl.atm.model.CashDispenser;
@@ -19,6 +17,7 @@ import com.appl.atm.model.Transfer;
 import com.appl.atm.view.Keypad;
 import com.appl.atm.view.Screen;
 import com.appl.atm.view.ShowCashDispenser;
+import com.appl.atm.view.AdminView;
 import java.io.IOException;
 
 /**
@@ -39,6 +38,7 @@ public class ATM {
     private AccountController accountController;
     private ShowCashDispenser showCashDispenser;
     private TanggalController tanggalController;
+    private AdminView adminView;
 
     private static final int BALANCE_INQUIRY = 1;
     private static final int WITHDRAWAL = 2;
@@ -73,6 +73,8 @@ public class ATM {
         accountController = new AccountController(bankDatabase, keypad, screen);
         showCashDispenser = new ShowCashDispenser();
         tanggalController = new TanggalController();
+        adminView = new AdminView();
+        
     }
 
     // start ATM 
@@ -90,7 +92,8 @@ public class ATM {
             } else {
                 if (loginAttempt == 3) {
                     screen.displayMessageLine("Your account has been blocked, please contact the bank");
-                    //bankDatabase.blockAccount(currentAccountNumber); //blokir acconut
+                    bankDatabase.blockAccount(currentAccountNumber); //blokir acconut
+                    loginAttempt = 0;
                 } else {
                     performTransactions(); // user is now authenticated
                     userAuthenticated = false; // reset before next ATM session
@@ -236,7 +239,11 @@ public class ATM {
                 case ADD_NASABAH:
                     adminController.AddNasabah();
                     break;
-                case UNBLOCK:
+                case UNBLOCK:                    
+//                    System.out.println(bankDatabase.getAccountBlocked());
+
+                    int number = adminView.displayUnblockMenu();
+                    adminController.unblockNasabah(number);
                     break;
                 case VALIDATE:
                     break;
