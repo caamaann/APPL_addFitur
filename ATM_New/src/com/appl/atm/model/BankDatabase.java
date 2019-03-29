@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class BankDatabase {
 
     private ArrayList<Account> accounts; // array of Accounts
+    private ArrayList<Integer> accountBlocked;
 
     public BankDatabase() {
         accounts = new ArrayList<Account>();
@@ -74,6 +75,15 @@ public class BankDatabase {
     }
     
     public void blockAccount(int noAkun){
+        
+        if(accountBlocked == null){
+            accountBlocked = new ArrayList<Integer>();
+            accountBlocked.add(noAkun);
+        }
+        else{
+            accountBlocked.add(noAkun);
+        }
+        
         for(int i = 0; i < (int) accounts.size(); i++){
             if(accounts.get(i).getAccountNumber() == noAkun){
                 accounts.get(i).blockUser();
@@ -108,5 +118,9 @@ public class BankDatabase {
     
     public ArrayList<Account> getAccounts() {
         return accounts;
+    }
+    
+    public ArrayList<Integer> getAccountBlocked() {
+        return accountBlocked;
     }
 }

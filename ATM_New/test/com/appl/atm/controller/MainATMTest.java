@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.ParseException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -45,7 +46,7 @@ public class MainATMTest {
      * Test of main method, of class MainATM.
      */
     @Test
-    public void testMain() throws FileNotFoundException {
+    public void testMain() throws FileNotFoundException, ParseException {
         System.out.println("main");
         String[] args = null;
         final InputStream original = System.in;

@@ -11,6 +11,27 @@ package com.appl.atm.model;
  */
 public class Account {
 
+    /**
+     * @param totalBalance the totalBalance to set
+     */
+    public void setTotalBalance(double totalBalance) {
+        this.totalBalance = totalBalance;
+    }
+
+    /**
+     * @return the UNBLOCK_COST
+     */
+    public int getUNBLOCK_COST() {
+        return UNBLOCK_COST;
+    }
+
+    /**
+     * @param UNBLOCK_COST the UNBLOCK_COST to set
+     */
+    public void setUNBLOCK_COST(int UNBLOCK_COST) {
+        this.UNBLOCK_COST = UNBLOCK_COST;
+    }
+
     private int accountNumber; // account number
     private int pin; // PIN for authentication
     private double availableBalance; // funds available for withdrawal
@@ -22,7 +43,7 @@ public class Account {
     public int MAXWITHDRAW;
     public int MAXTRANSFER;
     public int MONTHLY_ADM = 1;
-    private static int UNBLOCK_COST = 0; // balance cost for unblocking account
+    private int UNBLOCK_COST = 0; // balance cost for unblocking account
 
     // Account constructor initializes attributes
     public Account(int theAccountNumber, int thePIN,
@@ -56,16 +77,16 @@ public class Account {
     /* INI ANEH, TRF kok NAMBAH? */
     public void transfer(double amount) {
         this.availableBalance += amount;
-        this.totalBalance += amount;
+        this.setTotalBalance(this.totalBalance + amount);
     }
 
     public void credit(double amount) {
         this.availableBalance -= amount;
-        this.totalBalance -= amount;
+        this.setTotalBalance(this.totalBalance - amount);
     }
 
     public void debit(double amount) {
-        this.totalBalance += amount;
+        this.setTotalBalance(this.totalBalance + amount);
     }
 
     public int getAccountNumber() {
@@ -121,7 +142,7 @@ public class Account {
     }
 
     public int getUnblockCost() {
-        return Account.UNBLOCK_COST;
+        return getUNBLOCK_COST();
     }
 
     public int getMaxWithdraw() {
