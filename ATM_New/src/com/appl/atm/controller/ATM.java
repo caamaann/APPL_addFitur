@@ -10,6 +10,7 @@ import com.appl.atm.model.BalanceInquiry;
 import com.appl.atm.model.BankDatabase;
 import com.appl.atm.model.Admin;
 import com.appl.atm.model.CashDispenser;
+//import com.appl.atm.model.CobaAdmin;
 import com.appl.atm.model.Deposit;
 import com.appl.atm.model.DepositSlot;
 import com.appl.atm.model.Transaction;
@@ -73,7 +74,15 @@ public class ATM {
 	    }
             
             if (adminAuthenticated) {
-                performAdmins();
+//                CobaAdmin admin = new CobaAdmin(bankDatabase, cashDispenser);
+//                admin.execute();
+                
+                userAuthenticated = false;
+                currentAccountNumber = 0;
+                adminAuthenticated = false;
+//                userAuthenticated = false;
+//                currentAccountNumber = 0;
+//                screen.displayMessageLine("\nThank you! Goodbye!");
             } else if(userAuthenticated){
                 performTransactions();
                 userAuthenticated = false;
@@ -114,7 +123,13 @@ public class ATM {
 
             // check whether authentication succeeded
             if (adminAuthenticated) {
-                performAdmins();
+                //performAdmins();
+                //CobaAdmin admin;
+//                CobaAdmin adminMode = new CobaAdmin(bankDatabase, cashDispenser);
+//                adminMode.execute();
+                
+            currentAccountNumber = accountNumber;
+            
                 return;
     //        } else if (adminAuthenticated){
     //            performAdmins();

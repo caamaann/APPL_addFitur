@@ -11,6 +11,15 @@ package com.appl.atm.model;
  */
 public class Account {
 
+    /**
+     * @param UNBLOCK_COST the UNBLOCK_COST to set
+     */
+    public void setUNBLOCK_COST(int UNBLOCK_COST) {
+        this.UNBLOCK_COST = UNBLOCK_COST;
+    }
+
+    
+
     private int accountNumber; // account number
     private int pin; // PIN for authentication
     private double availableBalance; // funds available for withdrawal
@@ -22,16 +31,23 @@ public class Account {
     public int MAXWITHDRAW;
     public int MAXTRANSFER;
     public int MONTHLY_ADM = 1;
-    private static int UNBLOCK_COST = 0; // balance cost for unblocking account
+    private int UNBLOCK_COST = 0; // balance cost for unblocking account
 
+    /**
+     * @param totalBalance the totalBalance to set
+     */
+    public void setTotalBalance(double totalBalance) {
+        this.totalBalance = totalBalance;
+    }
+    
     // Account constructor initializes attributes
     public Account(int theAccountNumber, int thePIN,
             double theAvailableBalance, double theTotalBalance) {
-        accountNumber = theAccountNumber;
-        pin = thePIN;
-        availableBalance = theAvailableBalance;
-        totalBalance = theTotalBalance;
-        isBlocked = false;
+        this.accountNumber = theAccountNumber;
+        this.pin = thePIN;
+        this.availableBalance = theAvailableBalance;
+        this.totalBalance = theTotalBalance;
+        this.isBlocked = false;
     }
 
     // determines whether a user-specified PIN matches PIN in Account
@@ -41,12 +57,12 @@ public class Account {
 
     // returns available balance
     public double getAvailableBalance() {
-        return availableBalance;
+        return this.availableBalance;
     }
 
     // returns the total balance
     public double getTotalBalance() {
-        return totalBalance;
+        return this.totalBalance;
     }
 
     public void setAvailableBalance(double amount) {
@@ -56,20 +72,20 @@ public class Account {
     /* INI ANEH, TRF kok NAMBAH? */
     public void transfer(double amount) {
         this.availableBalance += amount;
-        this.totalBalance += amount;
+        this.setTotalBalance(this.totalBalance + amount);
     }
 
     public void credit(double amount) {
         this.availableBalance -= amount;
-        this.totalBalance -= amount;
+        this.setTotalBalance(this.totalBalance - amount);
     }
 
     public void debit(double amount) {
-        this.totalBalance += amount;
+        this.setTotalBalance(this.totalBalance + amount);
     }
 
     public int getAccountNumber() {
-        return accountNumber;
+        return this.accountNumber;
     }
 
     public void changePIN(int thePIN) {
@@ -89,11 +105,11 @@ public class Account {
     }
 
     public String getAccountType() {
-        return this.getClass().toString().substring(6);
+        return this.getClass().toString().substring(25);
     }
 
     public int getTransferToday() {
-        return transferToday;
+        return this.transferToday;
     }
 
     public void setTransferToday(double transferToday) {
@@ -101,7 +117,7 @@ public class Account {
     }
 
     public int getWithdrawToday() {
-        return WithdrawToday;
+        return this.WithdrawToday;
     }
 
     public void setWithdrawToday(double WithdrawToday) {
@@ -121,7 +137,7 @@ public class Account {
     }
 
     public int getUnblockCost() {
-        return Account.UNBLOCK_COST;
+        return this.UNBLOCK_COST;
     }
 
     public int getMaxWithdraw() {
@@ -140,7 +156,7 @@ public class Account {
      * @return the pin
      */
     public int getPin() {
-        return pin;
+        return this.pin;
     }
 
     /**

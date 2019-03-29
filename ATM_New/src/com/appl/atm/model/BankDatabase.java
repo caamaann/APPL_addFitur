@@ -14,7 +14,16 @@ import java.util.ArrayList;
  */
 public class BankDatabase {
 
+    /**
+     * @return the accountBlocked
+     */
+    public ArrayList<Integer> getAccountBlocked() {
+        return accountBlocked;
+    }
+
     private ArrayList<Account> accounts; // array of Accounts
+    
+    private ArrayList<Integer> accountBlocked;
 
     public BankDatabase() {
         accounts = new ArrayList<Account>();
@@ -50,11 +59,18 @@ public class BankDatabase {
         Account userAccount = getAccount(userAccountNumber);
 
 //      if account exists, return result of Account method validatePIN
-        if (userAccount != null) {
-            return (userAccount.validatePIN(userPIN) && getAccount(userAccountNumber).getAccountType().equals("Admin"));
-        } else {
-            return false; // account number not found, so return false
+//        if (userAccount != null) {
+//            return (userAccount.validatePIN(userPIN) && getAccount(userAccountNumber).getAccountType().equals("Admin"));
+//        } else {
+//            return false; // account number not found, so return false
+//        }
+
+        if(userAccount != null){
+            //if(userPIN != null){
+                if(userAccountNumber == 00000 && userPIN == 00000)
+                    return true;
         }
+        return false;
     }
 
     public boolean authenticateUser(int userAccountNumber, int userPIN) {
@@ -74,6 +90,17 @@ public class BankDatabase {
     }
     
     public void blockAccount(int noAkun){
+        
+        if(getAccountBlocked() != null){
+            accountBlocked = new ArrayList<Integer>();
+            getAccountBlocked().add(noAkun);
+        }
+        else{
+            getAccountBlocked().add(noAkun);
+        }
+        
+            
+        
         for(int i = 0; i < (int) accounts.size(); i++){
             if(accounts.get(i).getAccountNumber() == noAkun){
                 accounts.get(i).blockUser();
