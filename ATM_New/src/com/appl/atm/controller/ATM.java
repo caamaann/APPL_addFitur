@@ -31,6 +31,8 @@ public class ATM {
     private CashDispenser cashDispenser; // ATM's cash dispenser
     private DepositSlot depositSlot;
     private BankDatabase bankDatabase; // account information database
+    private AdminController adminController;
+    private AccountController accountController;
 
     private static final int BALANCE_INQUIRY = 1;
     private static final int WITHDRAWAL = 2;
@@ -62,6 +64,9 @@ public class ATM {
 	cashDispenser = new CashDispenser();
 	depositSlot = new DepositSlot();
 	bankDatabase = new BankDatabase();
+        adminController = new AdminController(bankDatabase, keypad, screen);
+        accountController = new AccountController(bankDatabase, keypad, screen);
+        
     }
 
     // start ATM 
@@ -148,8 +153,8 @@ public class ATM {
 	// loop while user has not chosen option to exit system
 	while (!userExited) {
 	    // show main menu and get user selection
-	    AccountController acc = new AccountController();   
-            int mainMenuSelection = acc.displayMainMenu(currentAccountNumber);
+//	    AccountController acc = new AccountController();   
+            int mainMenuSelection = accountController.displayMainMenu(currentAccountNumber);
 
 	    // decide how to proceed based on user's menu selection
 	    switch (mainMenuSelection) {
@@ -201,21 +206,21 @@ public class ATM {
     }
     
     private void performAdmins() {
-        // local variable to store transaction currently being processed
-        Transaction currentTransaction = null;
-
+        
         boolean userExited = false; // user has not chosen to exit
 
         // loop while user has not chosen option to exit system
         while (!userExited) {
-            AdminController admin = new AdminController();
+//            AdminController admin = new AdminController(bankDatabase, keypad, screen);
             // show main menu and get user selection
-            int adminMenuSelection = admin.displayMainMenu(currentAccountNumber);
+            int adminMenuSelection = adminController.displayMainMenu(currentAccountNumber);
 
             // decide how to proceed based on user's menu selection
             switch (adminMenuSelection) {
                 // user chose to perform one of three transaction types
                 case ADD_NASABAH:
+                    adminController.AddNasabah();
+                    break;
                 case UNBLOCK:
                     break;
                 case VALIDATE:

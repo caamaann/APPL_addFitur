@@ -15,7 +15,15 @@ import com.appl.atm.view.*;
  */
 public class AccountController{
     
-    BankDatabase bankDatabase = new BankDatabase();
+    private Keypad keypad; // reference to keypad
+    private Screen screen;
+    private BankDatabase bankDatabase;
+    
+    public AccountController(BankDatabase theBankDatabase, Keypad theKeypad, Screen theScreen){
+        bankDatabase = theBankDatabase;
+	keypad = theKeypad;
+	screen = theScreen;
+    }
     
     public int  displayMainMenu(int accountNumber){
         Account account = bankDatabase.getAccount(accountNumber);       
