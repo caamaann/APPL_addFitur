@@ -17,9 +17,8 @@ public class BankDatabase {
 
     public BankDatabase() {
         accounts = new ArrayList<Account>();
-
         accounts.add(new Admin(00000, 00000, 0.0, 0.0));
-        accounts.add(new AccountBussiness(1234, 4321, 1000.0, 1200.0));
+        accounts.add(new AccountBussiness(1234, 4321, 10000.0, 12000.0));
         accounts.add(new AccountStudent(8765, 5678, 200.0, 200.0));
         accounts.add(new AccountBussiness(6665, 1234, 111700.0, 111900.0));
         accounts.add(new AccountMasaDepan(6666, 1234, 1700.0, 1900.0));
@@ -45,14 +44,13 @@ public class BankDatabase {
         }
     }
 
-
     public boolean authenticateAdmin(int userAccountNumber, int userPIN) {
         // attempt to retrieve the account with the account number
         Account userAccount = getAccount(userAccountNumber);
 
 //      if account exists, return result of Account method validatePIN
-        if (userAccount != null && !userAccount.isUserBlocked()) {
-           return (userAccount.validatePIN(userPIN) && userAccount.getAccountType().equals("Admin"));
+        if (userAccount != null) {
+            return (userAccount.validatePIN(userPIN) && getAccount(userAccountNumber).getAccountType().equals("Admin"));
         } else {
             return false; // account number not found, so return false
         }
@@ -86,9 +84,9 @@ public class BankDatabase {
     
     public void incAccount(int theAccountNumber, int thePIN, double theAvailableBalance, double theTotalBalance, int theAccountType) {
         switch(theAccountType){
-            case 1: accounts.add( new Bisnis(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance)); break;
-            case 2: accounts.add( new Siswa(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance)); break;
-            case 3: accounts.add( new MasaDepan(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance)); break;
+            case 1: accounts.add( new AccountBussiness(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance)); break;
+            case 2: accounts.add( new AccountStudent(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance)); break;
+            case 3: accounts.add( new AccountMasaDepan(theAccountNumber, thePIN, theAvailableBalance, theTotalBalance)); break;
                 
         }
     }

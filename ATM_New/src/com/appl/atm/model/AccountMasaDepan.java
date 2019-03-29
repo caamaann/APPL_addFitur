@@ -21,15 +21,15 @@ public class AccountMasaDepan extends Account {
                 theAvailableBalance, theTotalBalance);
     }
 
-    public int getMaxWithdraw() {
+    public int getMAXWITHDRAW() {
         return MAXWITHDRAW;
     }
 
-    public int getMaxTransfer() {
+    public int getMAXTRANSFER() {
         return MAXTRANSFER;
     }
 
-    public int getMonthlyAdm() {
+    public int getMONTHLY_ADM() {
         return MONTHLY_ADM;
     }
 }

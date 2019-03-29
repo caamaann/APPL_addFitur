@@ -9,73 +9,51 @@ import static com.appl.atm.model.Constants.*;
 
 /**
  *
- * @author Annazar
+ * @author Sophia Gianina Daeli
  */
-public class Withdrawal extends Transaction {
-
+public class Transfer extends Transaction {  
+    
     private int amount; // amount to withdraw
     private CashDispenser cashDispenser; // reference to cash dispenser
 
-    // Withdrawal constructor
-    public Withdrawal(int userAccountNumber, BankDatabase atmBankDatabase,
+    public Transfer(int userAccountNumber, BankDatabase atmBankDatabase,
             CashDispenser atmCashDispenser) {
 
         // initialize superclass variables
         super(userAccountNumber, atmBankDatabase);
         cashDispenser = atmCashDispenser;
     }
-
+    
     @Override
     public int execute() {
         Account account = getBankDatabase().getAccount(getAccountNumber());
-        account.setWithdrawToday(amount);
+        account.setTransferToday(amount);
 
         if (account.getAvailableBalance() < amount) {
-            account.setWithdrawToday(-amount);
+        account.setTransferToday(amount);
             return BALANCE_NOT_ENOUGH;
-        }
-
-        if (account.getWithdrawToday() > account.getMAXWITHDRAW()) {
-            account.setWithdrawToday(-amount);
+        } else if (account.getTransferToday() > account.getMAXTRANSFER()) {
+        account.setTransferToday(amount);
             return REACH_LIMIT;
-        }
-
-        if (cashDispenser.isSufficientCashAvailable(amount)) {
-            cashDispenser.dispenseCash(amount);
-            account.debit(amount);
-            return WITHDRAW_SUCCESSFUL;
         } else {
-            account.setWithdrawToday(-amount);
-            return CASHDISPENSER_NOT_ENOUGH;
+            account.credit(amount);
+            return WITHDRAW_SUCCESSFUL;
         }
     }
 
-    /**
-     * @return the amount
-     */
     public int getAmount() {
         return amount;
     }
 
-    /**
-     * @param amount the amount to set
-     */
     public void setAmount(int amount) {
         this.amount = amount;
     }
 
-    /**
-     * @return the cashDispenser
-     */
     public CashDispenser getCashDispenser() {
         return cashDispenser;
     }
 
-    /**
-     * @param cashDispenser the cashDispenser to set
-     */
     public void setCashDispenser(CashDispenser cashDispenser) {
         this.cashDispenser = cashDispenser;
     }
-
 }

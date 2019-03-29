@@ -60,12 +60,13 @@ public class Account {
     }
 
     public void credit(double amount) {
-        this.availableBalance -= amount;
-        this.totalBalance -= amount;
+        this.availableBalance += amount;
+        this.totalBalance += amount;
     }
 
     public void debit(double amount) {
-        this.totalBalance += amount;
+        this.totalBalance -= amount;
+        this.availableBalance -= amount;
     }
 
     public int getAccountNumber() {
@@ -92,23 +93,7 @@ public class Account {
         return this.getClass().toString().substring(25);
     }
 
-    public int getTransferToday() {
-        return transferToday;
-    }
-
-    public void setTransferToday(double transferToday) {
-        this.transferToday += transferToday;
-    }
-
-    public int getWithdrawToday() {
-        return WithdrawToday;
-    }
-
-    public void setWithdrawToday(double WithdrawToday) {
-        this.WithdrawToday += WithdrawToday;
-    }
-
-    public void displayMainMenu(){
+    public void displayMainMenu() {
     }
 
     public void payTax() {
@@ -124,18 +109,29 @@ public class Account {
 
     public int getUnblockCost() {
         return Account.UNBLOCK_COST;
-
     }
 
-    public int getMaxWithdraw() {
+    public int getMAXWITHDRAW() {
         return MAXWITHDRAW;
     }
 
-    public int getMaxTransfer() {
+    public int getMAXTRANSFER() {
         return MAXTRANSFER;
     }
+    
+    public int getTransferToday() {
+        return transferToday;
+    }
 
-    public int getMonthlyAdm() {
-        return MONTHLY_ADM;
+    public void setTransferToday(double transferToday) {
+        this.transferToday += transferToday;
+    }
+
+    public int getWithdrawToday() {
+        return WithdrawToday;
+    }
+
+    public void setWithdrawToday(double WithdrawToday) {
+        this.WithdrawToday += WithdrawToday;
     }
 }

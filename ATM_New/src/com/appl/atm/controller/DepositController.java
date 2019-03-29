@@ -33,8 +33,7 @@ public class DepositController extends TransactionController {
 	} else {
 	    transaction.setAmount(amount);
 	    transaction.execute();
-	    BankStatementController bankStatement = new BankStatementController();
-            getScreen().displayMessage("Please insert a deposit envelope containing $");
+	    getScreen().displayMessage("Please insert a deposit envelope containing $");
 	    getScreen().displayDollarAmount(amount);
 	    getScreen().displayMessageLine("\n");
 	    getScreen().displayMessageLine("Your envelope has been received.");

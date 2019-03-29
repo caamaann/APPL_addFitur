@@ -19,7 +19,7 @@ public class AccountStudent extends Account {
                 theAvailableBalance, theTotalBalance);
     }
 
-    public int getMaxWithdraw() {
+    public int getMAXWITHDRAW() {
         return MAXWITHDRAW;
     }
 }
