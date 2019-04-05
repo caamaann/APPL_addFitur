@@ -240,10 +240,11 @@ public class ATM {
                     adminController.AddNasabah();
                     break;
                 case UNBLOCK:                    
-//                    System.out.println(bankDatabase.getAccountBlocked());
+                    System.out.println(bankDatabase.getAccountBlocked());
 
                     int number = adminView.displayUnblockMenu();
                     adminController.unblockNasabah(number);
+                    bankDatabase.getAccount(number).unblockUser();
                     break;
                 case VALIDATE:
                     break;

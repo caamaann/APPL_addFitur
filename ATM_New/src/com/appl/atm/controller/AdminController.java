@@ -113,10 +113,10 @@ public class AdminController {
     }
 
     public void unblockNasabah(int noAkun) {
-        System.out.println(getBlocked());
-        for (int i = 0; i < (int) getBlocked().size(); i++) {
+        int i, cari;
+        for (i = 0; i < (int) getBlocked().size(); i++) {
             if (noAkun == getBlocked().get(i)) {
-                for (int cari = 0; i < (int) getAccounts().size(); cari++) {
+                for (cari = 0; cari < (int) getAccounts().size(); cari++) {
                     if (noAkun == getAccounts().get(i).getAccountNumber()) {
                         if (getAccounts().get(i).getAccountType().equals("AccountBussiness")) {
                             getAccounts().get(i).setUNBLOCK_COST(3);
