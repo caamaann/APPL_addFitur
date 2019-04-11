@@ -7,6 +7,7 @@ package com.appl.atm.controller;
 
 import com.appl.atm.model.BalanceInquiry;
 import com.appl.atm.model.BankDatabase;
+import com.appl.atm.model.BankStatement;
 import com.appl.atm.model.CashDispenser;
 import com.appl.atm.model.Deposit;
 import com.appl.atm.model.DepositSlot;
@@ -39,6 +40,9 @@ public class ATM {
     private ShowCashDispenser showCashDispenser;
     private TanggalController tanggalController;
     private AdminView adminView;
+    private BankStatement bankStatement;
+    private BankStatementController bsc;
+    
 
     private static final int BALANCE_INQUIRY = 1;
     private static final int WITHDRAWAL = 2;
@@ -74,7 +78,8 @@ public class ATM {
         showCashDispenser = new ShowCashDispenser();
         tanggalController = new TanggalController();
         adminView = new AdminView();
-        
+        bankStatement = new BankStatement(currentAccountNumber);
+    
     }
 
     // start ATM 
@@ -207,8 +212,8 @@ public class ATM {
                 case PASSWORD:
                     break;
                 case BANK_STATEMENT:
-                    BankStatementController bankStatementController = new BankStatementController();
-                    bankStatementController.displayBankStatement(currentAccountNumber);
+                    bsc = new BankStatementController(bankStatement, currentAccountNumber);
+                    bsc.displayStatement();
                     break;
                 case EXIT: // user chose to terminate session
                     screen.displayMessageLine("\nExiting the system...");
@@ -299,19 +304,19 @@ public class ATM {
         switch (type) {
             case BALANCE_INQUIRY:
                 temp = new BalanceInquiry(
-                        currentAccountNumber, bankDatabase);
+                        currentAccountNumber, bankDatabase, bankStatement);
                 break;
             case WITHDRAWAL:
                 temp = new Withdrawal(
-                        currentAccountNumber, bankDatabase, cashDispenser);
+                        currentAccountNumber, bankDatabase, cashDispenser, bankStatement);
                 break;
             case DEPOSIT:
                 temp = new Deposit(
-                        currentAccountNumber, bankDatabase, depositSlot);
+                        currentAccountNumber, bankDatabase, depositSlot, bankStatement);
                 break;
             case TRANSFER:
                 temp = new Transfer(
-                        currentAccountNumber, bankDatabase, cashDispenser);
+                        currentAccountNumber, bankDatabase, cashDispenser, bankStatement);
                 break;
         }
 

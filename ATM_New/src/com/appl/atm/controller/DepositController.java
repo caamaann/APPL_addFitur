@@ -38,7 +38,9 @@ public class DepositController extends TransactionController {
 	    getScreen().displayMessageLine("\n");
 	    getScreen().displayMessageLine("Your envelope has been received.");
 	    getScreen().displayMessageLine("NOTE: The money just deposited will not be available until we verify the amount of any enclosed cash and your checks clear.");
-	}
+            transaction.getBankStatement().addStatement(transaction.getAccountNumber(), (int) amount, "Deposit");
+                    
+        }
 	
 	return 0;
     }

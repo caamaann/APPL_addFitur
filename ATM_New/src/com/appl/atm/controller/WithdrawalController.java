@@ -35,6 +35,7 @@ public class WithdrawalController extends TransactionController {
             switch (res) {
                 case WITHDRAW_SUCCESSFUL:
                     getScreen().displayMessageLine("\nYour cash has been dispensed. Please take your cash now.");
+                    transaction.getBankStatement().addStatement(transaction.getAccountNumber(), amount, "Withdrawal");
                     break;
                 case BALANCE_NOT_ENOUGH:
                     getScreen().displayMessageLine("\nYour balance isn't enough for this withdrawal.");

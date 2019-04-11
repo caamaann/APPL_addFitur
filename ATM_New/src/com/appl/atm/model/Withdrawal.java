@@ -18,10 +18,9 @@ public class Withdrawal extends Transaction {
 
     // Withdrawal constructor
     public Withdrawal(int userAccountNumber, BankDatabase atmBankDatabase,
-            CashDispenser atmCashDispenser) {
+            CashDispenser atmCashDispenser,BankStatement bankStatement) {
 
-        // initialize superclass variables
-        super(userAccountNumber, atmBankDatabase);
+	super(userAccountNumber, atmBankDatabase, bankStatement);
         cashDispenser = atmCashDispenser;
     }
 

@@ -17,10 +17,9 @@ public class Transfer extends Transaction {
     private CashDispenser cashDispenser; // reference to cash dispenser
 
     public Transfer(int userAccountNumber, BankDatabase atmBankDatabase,
-            CashDispenser atmCashDispenser) {
+            CashDispenser atmCashDispenser,BankStatement bankStatement) {
 
-        // initialize superclass variables
-        super(userAccountNumber, atmBankDatabase);
+	super(userAccountNumber, atmBankDatabase, bankStatement);
         cashDispenser = atmCashDispenser;
     }
     

@@ -46,6 +46,8 @@ public class TransferController extends TransactionController {
 
             if (res == WITHDRAW_SUCCESSFUL) {
                 getScreen().displayMessageLine("\nTransfer successful.");
+                transaction.getBankStatement().addStatement(transaction.getAccountNumber(), amount, "Transfer");
+                    
             } else if (res == BALANCE_NOT_ENOUGH) {
                 getScreen().displayMessageLine("\nYour balance isn't enough for the transaction. "
                         + "Please enter another amount.");

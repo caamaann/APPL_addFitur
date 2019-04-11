@@ -15,34 +15,16 @@ import java.util.List;
  * @author ACER
  */
 public class BankStatementController {
-   private List<BankStatement> list = new ArrayList<>();
-   BankStatementView bankStatementView = new BankStatementView();
-   
-    public void setBankStatement(int account, String description, int ref, double withdrawal, double deposit, String depVal) {
-       BankDatabase bankDatabase = new BankDatabase();
-       BankStatement tr = new BankStatement();
-       TanggalController tgl = new TanggalController();
-       tr.setIdStatement(list.size());
-       tr.setAccount(account);
-       tr.setDate(tgl.getDate());
-       tr.setDeposit(deposit);
-       tr.setDepositValidate(depVal);
-       tr.setDescription(description);
-       tr.setRef(ref);
-       tr.setWithdrawal(withdrawal);
-       tr.setBalance(bankDatabase.getAccount(account).getAvailableBalance());
-       this.list.add(tr);
+   BankStatement bankStatement;
+   int LoginAccountNumber;
+   BankStatementView statementView  = new BankStatementView();     
+   public BankStatementController(BankStatement theBankStatement,int theAccountNumber ){
+       bankStatement = theBankStatement;
+       LoginAccountNumber = theAccountNumber;
    }
-   
-   public List<BankStatement> getList() throws IOException {
-        if (this.list.isEmpty()) {
-            return null;
-        }
-        return this.list;
-    }
     
-   
-   public void displayBankStatement(int accountNumber) throws IOException{
-       bankStatementView.displayBankStatement(accountNumber);
-   }
+    public void displayStatement(){
+        statementView.display(bankStatement.getDataSize(), LoginAccountNumber, bankStatement.getAccountNumber(),
+                bankStatement.getTransaction(), bankStatement.getAmount(), bankStatement.getDate());
+    }
 }
